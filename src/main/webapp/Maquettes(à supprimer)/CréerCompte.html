@@ -1,0 +1,89 @@
+<!-- header à fragmenter -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accueil</title>
+</head>
+<body>
+
+  <!-- Barre de navigation -->
+  <header id="navbar">
+    <nav class="navbar container">
+      <a class="logo" href="/accueil.html">#ENI-Enchères</a>
+      <div>
+        <a class="nav_link" href="#">S'inscrire</a>
+        <a class="nav_link" href="#">Se Connecter</a>
+      </div>
+    </nav>
+  </header>
+  <section class="connect_main">
+    <div >
+      <form class="connect_form create_form" action="">
+        <div>
+          <h2>Créer un compte</h2>
+        </div>
+        <div class="connect_input">
+          <div class="form_create_section">
+            <input class="form_input" type="email" placeholder="Email">
+            <input class="form_input" type="text" placeholder="Pseudo">
+          </div>
+          <div class="form_create_section">
+            <input class="form_input" type="text" placeholder="Nom">
+            <input class="form_input" type="text" placeholder="Prénom">
+          </div>
+          <div class="form_create_section">
+            <input class="form_input" type="tel" placeholder="Téléphone">
+          </div>
+
+          <div class="form_create_section">
+            <input class="form_input" type="text" placeholder="Rue">
+          </div>
+          <div class="form_create_section">
+            <input class="form_input" type="text" placeholder="Code Postal">
+            <input class="form_input" type="text" placeholder="Ville">
+          </div>
+          <div class="form_create_section">
+            <input class="form_input" type="password" placeholder="Mot de passe">
+          </div>
+          <div class="form_create_section">
+            <input class="form_input" type="password" placeholder="Confirmer mot de passe">
+          </div>
+        </div>
+        <div class="create_form_controls">
+          <div class="connect_input">
+            <a href="/connecter.html" class="form_button">Connexion</a>
+          </div>
+          <div class="connect_input">
+            <a href="accueil.html" class="form_button no_account">Annuler</a>
+          </div>
+        </div>
+      </form>
+    </div>
+
+  </section>
+  
+
+
+  <!-- footer à fragmenter -->
+  <footer>
+    <div>
+      <a href="#">ENI-Ecole informatique &copy</a> - 
+      <a href="#">Groupe Apahere</a>
+    </div>
+    <link rel="stylesheet" href="./Public/Styles/main.css">
+  </footer>
+  <script>
+    window.addEventListener('scroll', () => {
+      let navbar = document.getElementById("navbar");
+      if (window.pageYOffset > navbar.offsetTop) {
+        navbar.classList.add("sticky");
+      } else {
+        navbar.classList.remove("sticky");
+      }
+    })
+  </script>
+</body>
+</html>
