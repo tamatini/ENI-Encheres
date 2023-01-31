@@ -1,5 +1,8 @@
 package org.encheres.eni.dal;
 
-public interface DAO {
+import org.encheres.eni.BusinessException;
 
+public interface DAO<T> {
+
+	public void insert(T object) throws BusinessException;
 }
