@@ -21,10 +21,10 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	 * La méthode retourne le pseudo et le mot de passe de l'utilisateur
 	 * @param pseudo le pseudo de l'utilisateur
 	 * @return l'utilisateur existant
+	 * @throws BusinessException 
 	 */
-	public Utilisateur SelectByPseudo(String pseudo) {
+	public Utilisateur SelectByPseudo(String pseudo) throws BusinessException {
 		Utilisateur utilisateur = new Utilisateur();
-		
 		try (Connection conn = ConnectionProvider.getConnection(); PreparedStatement ps = conn.prepareStatement(SELECT_BY_PSEUDO);) {
 			ps.setString(1, pseudo);
 			ResultSet rs = ps.executeQuery();
@@ -36,7 +36,9 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			// Sinon cet utilisateur n'existe pas / mauvais nom d'utilisateur
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_OBJECT_ECHEC);
+			throw businessException;
 		}
 		return utilisateur;
 	}

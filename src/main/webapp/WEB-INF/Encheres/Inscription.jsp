@@ -1,3 +1,3 @@
-<%@ include file="./Partials/Header.jsp" %>
+<%@ include file="./Partials/Header.jspf" %>
 	<h1>This is the register page</h1>
-<%@ include file="./Partials/Footer.jsp" %>
+<%@ include file="./Partials/Footer.jspf" %>
