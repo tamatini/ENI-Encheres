@@ -6,7 +6,7 @@
 		driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
 		type="javax.sql.DataSource"
 		
-		url="jdbc:sqlserver://localhost;databasename=BDD_ENCHERES"
+		url="jdbc:sqlserver://localhost;databasename=BDD_ENCHERES; encrypt=true; trustServerCertificate=true"
 		username="apahere"
 		password="Pa$$w0rd"
 		

@@ -301,6 +301,18 @@ header {
   padding: 0;
 }
 
+/* Profil */
+.profil_table {
+	width: 300px;
+    margin: auto;
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+    border-radius: 4px;
+    padding: 2rem 1.5rem;
+    box-shadow: 1px 1px 10px 1px #0018384a;
+      	
+}
+
 footer {
   background-color: #272a36;
 }
@@ -314,3 +326,4 @@ footer div {
 footer div a {
   color: white;
 }
+

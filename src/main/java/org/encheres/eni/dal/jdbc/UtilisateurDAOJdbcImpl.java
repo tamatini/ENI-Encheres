@@ -73,4 +73,31 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 			throw businessException;
 		}
 	}
+	
+	@Override
+	public Utilisateur selectById(int Id) {
+		Utilisateur pseudo = new Utilisateur();
+		
+		try(Connection cnx = ConnectionProvider.getConnection()){
+				PreparedStatement pstmt = cnx.prepareStatement("SELECT utilisateurId, pseudo, nom, prenom, email, telephone, rue, codePostal, ville FROM Utilisateurs WHERE utilisateurId = ?");
+				pstmt.setInt(1, Id);
+				ResultSet rs = pstmt.executeQuery(); 
+			if(rs.next()) {
+				pseudo.setUtilisateurId(rs.getInt("utilisateurId"));
+				pseudo.setPseudo(rs.getString("pseudo"));
+				pseudo.setNom(rs.getString("nom"));
+				pseudo.setPrenom(rs.getString("prenom"));
+				pseudo.setEmail(rs.getString("email"));
+				pseudo.setTelephone(rs.getString("telephone"));
+				pseudo.setRue(rs.getString("rue"));
+				pseudo.setCodePostal(rs.getString("codePostal"));
+				pseudo.setVille(rs.getString("ville"));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+				
+		return pseudo;
+	}
 }

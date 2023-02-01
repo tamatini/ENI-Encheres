@@ -13,7 +13,7 @@ public class UtilisateurBLL {
 	 * Constructeur
 	 * @param utilisateurDAO
 	 */
-	public UtilisateurBLL(UtilisateurDAO utilisateurDAO) {
+	public UtilisateurBLL() {
 		this.utilisateurDAO = (UtilisateurDAO) DAOFactory.getUtilisateurDAO();
 	}
 
@@ -44,5 +44,8 @@ public class UtilisateurBLL {
 	// Supprimer un utilisateur
 	
 	// Voir un utilisateur
+	public Utilisateur afficherProfil (int utilisateurId) {
+		return utilisateurDAO.selectById(utilisateurId);
+	}
 
 }

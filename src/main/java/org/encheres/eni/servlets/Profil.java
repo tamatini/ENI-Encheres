@@ -1,11 +1,17 @@
 package org.encheres.eni.servlets;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.encheres.eni.bll.UtilisateurBLL;
+import org.encheres.eni.bo.Utilisateur;
+
 
 /**
  * Servlet implementation class Profil
@@ -18,7 +24,19 @@ public class Profil extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		RequestDispatcher rq = request.getRequestDispatcher("/WEB-INF/Encheres/Profil.jsp");
+		UtilisateurBLL utilisateurBLL = new UtilisateurBLL();
+		if(!request.getParameter("id").equals("")) {
+			int utilisateurId = Integer.parseInt(request.getParameter("id"));
+			Utilisateur utilisateur = utilisateurBLL.afficherProfil(utilisateurId);
+			if(utilisateur.getUtilisateurId() != 0) {
+				System.out.println(utilisateur.getUtilisateurId());
+				request.setAttribute("utilisateur", utilisateur);
+				rq.forward(request, response);	
+			}
+		}else {
+			response.sendRedirect("/EniEncheres/encheres");
+		}
 	}
 
 	/**
