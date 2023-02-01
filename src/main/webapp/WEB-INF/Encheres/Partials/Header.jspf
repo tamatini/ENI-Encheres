@@ -4,7 +4,8 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="./Public/Styles/main.css">
+<link rel="stylesheet" href="../Public/Styles/main.css">
 <title>ENI-Enchères - ${ titre }</title>
 </head>
 <body>
-	<%@ include file="./Nav.jsp" %>
+	<%@ include file="./Nav.jspf" %>

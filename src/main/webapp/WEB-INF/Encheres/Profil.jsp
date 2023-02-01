@@ -1,4 +1,4 @@
-<%@ include file="./Partials/Header.jsp" %>
+<%@ include file="./Partials/Header.jspf" %>
 <link rel="stylesheet" href="../Public/Styles/main.css">
 <div class="container">
 	<table class="profil_table">
@@ -36,4 +36,4 @@
 		</tr>    
 	</table>		
 </div>	
-<%@ include file="./Partials/Footer.jsp" %>
+<%@ include file="./Partials/Footer.jspf" %>

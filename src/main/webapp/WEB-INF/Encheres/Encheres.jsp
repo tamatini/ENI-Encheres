@@ -1,4 +1,4 @@
-<%@ include file="./Partials/Header.jsp" %>
+<%@ include file="./Partials/Header.jspf" %>
 
 <!-- Formulaire de recherche écrire le javascript pour modifier les couleurs du fond -->
   <section class="container-fluid main_section">
@@ -143,4 +143,4 @@
       </li>
     </ul>
   </section>
-<%@ include file="./Partials/Footer.jsp" %>
+<%@ include file="./Partials/Footer.jspf" %>

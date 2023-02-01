@@ -1,4 +1,4 @@
-<%@ include file="./Partials/Header.jsp" %>
+<%@ include file="./Partials/Header.jspf" %>
 	
 	<section class="connect_main">
     <div >
@@ -45,4 +45,4 @@
     </div>
   </section>
 	
-<%@ include file="./Partials/Footer.jsp" %>
+<%@ include file="./Partials/Footer.jspf" %>
