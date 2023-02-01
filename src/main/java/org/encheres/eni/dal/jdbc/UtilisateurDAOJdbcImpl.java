@@ -52,7 +52,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 		try(Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement pstmt = cnx.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
 			pstmt.setString(1, utilisateur.getPseudo());
-			pstmt.setString(2, utilisateur.getNom());
+			pstmt.setString(2, utilisateur.getNom().toUpperCase());
 			pstmt.setString(3, utilisateur.getPrenom());
 			pstmt.setString(4, utilisateur.getEmail());
 			pstmt.setString(5, utilisateur.getTelephone());
@@ -69,7 +69,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 		catch(SQLException e) {
 			e.printStackTrace();
 			BusinessException businessException = new BusinessException();
-			businessException.ajouterErreur(CodesResultatDAL.INSERT_OBJECT_ECHEC);
+			businessException.ajouterErreur(CodesResultatDAL.INSERT_USER_ECHEC);
 			throw businessException;
 		}
 	}
@@ -99,5 +99,11 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 		}
 				
 		return pseudo;
+	}
+
+	@Override
+	public Utilisateur selectByEmail(String email) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
