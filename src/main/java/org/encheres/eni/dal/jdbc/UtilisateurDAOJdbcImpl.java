@@ -74,7 +74,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 			pstmt.executeUpdate();
 			ResultSet rs = pstmt.getGeneratedKeys();
 			if (rs.next()) {
-				utilisateur.setUtilisateurId(rs.getInt("idArticle"));
+				utilisateur.setUtilisateurId(rs.getInt(1));
 			}
 		}
 		catch(SQLException e) {
