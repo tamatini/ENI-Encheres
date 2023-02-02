@@ -11,19 +11,21 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.encheres.eni.BusinessException;
 import org.encheres.eni.bll.UtilisateurBLL;
+import org.encheres.eni.bo.Utilisateur;
 
 /**
  * Servlet implementation class Inscription
  */
 @WebServlet("/encheres/inscription")
 public class Inscription extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
+	private static final long serialVersionUID = 1L; 
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		// TODO rediriger la modification de profil vers une nouvelle servlet (voir Charlène)
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Encheres/Inscription.jsp");
 		rd.forward(request, response);
 	}
@@ -32,27 +34,33 @@ public class Inscription extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-		
-		UtilisateurBLL nouvelUtilisateur = new UtilisateurBLL();
-		String pseudo = (String) request.getAttribute("pseudo");
-		String nom = (String) request.getAttribute("nom");
-		String prenom = (String) request.getAttribute("prenom");
-		String email = (String) request.getAttribute("email");
-		String telephone = (String) request.getAttribute("telephone");
-		String rue = (String) request.getAttribute("rue");
-		String codePostal = (String) request.getAttribute("codePostal");
-		String ville = (String) request.getAttribute("ville");
-		String motDePasse = (String) request.getAttribute("motDePasse");
-		String controle_motDePasse = (String) request.getAttribute("controle_motDePasse");
+		request.setCharacterEncoding("UTF-8");
+		UtilisateurBLL utilisateurBLL = new UtilisateurBLL();
+		Utilisateur nouvelUtilisateur = new Utilisateur();
+		String controle_motDePasse = null;
 		
 		try {
-			nouvelUtilisateur.creerUtilisateur(pseudo, nom, prenom, email, telephone, rue, codePostal, ville, motDePasse);
+			nouvelUtilisateur.setPseudo((String) request.getParameter("pseudo"));
+			nouvelUtilisateur.setNom((String) request.getParameter("nom"));
+			nouvelUtilisateur.setPrenom((String) request.getParameter("prenom"));
+			nouvelUtilisateur.setEmail((String) request.getParameter("email"));
+			nouvelUtilisateur.setTelephone((String) request.getParameter("telephone"));
+			nouvelUtilisateur.setRue((String) request.getParameter("rue"));
+			nouvelUtilisateur.setCodePostal((String) request.getParameter("codePostal"));
+			nouvelUtilisateur.setVille((String) request.getParameter("ville"));
+			nouvelUtilisateur.setMotDePasse((String) request.getParameter("motDePasse"));
+			controle_motDePasse = (String) request.getParameter("controle_motDePasse");
+			
+			System.out.println(nouvelUtilisateur.toString());
+			utilisateurBLL.creerUtilisateur(nouvelUtilisateur, controle_motDePasse);
+			
 		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			request.setAttribute("Liste_codes_erreurs", e.getListeCodesErreur());
+			request.setAttribute("donnees_formulaire", nouvelUtilisateur);
+			request.setAttribute("controle_motDePasse", controle_motDePasse);
+			doGet(request, response);
 		}
-		
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Encheres/Encheres.jsp");
+		rd.forward(request, response);
 	}
-
 }

@@ -332,3 +332,17 @@ footer div a {
   color: white;
 }
 
+.erreurs {
+	color: red;
+    background: #ffcccc;
+    padding: 0.5rem 0.8rem;
+    border-radius: 4px;
+    position: absolute;
+    width: 250px;
+    text-align: center;
+    line-height: 1.4rem;
+    top: 100px;
+    margin: auto;
+    left: 0;
+    right: 0;
+}

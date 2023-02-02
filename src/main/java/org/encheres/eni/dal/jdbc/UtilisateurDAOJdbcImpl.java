@@ -12,7 +12,8 @@ import org.encheres.eni.dal.CodesResultatDAL;
 import org.encheres.eni.dal.UtilisateurDAO;
 
 public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
-	private String SELECT_BY_PSEUDO = "SELECT pseudo, motDePasse from Utilisateurs WHERE pseudo=?";
+	private String SELECT_BY_PSEUDO = "SELECT * FROM Utilisateurs WHERE pseudo=?";
+	private String SELECT_BY_EMAIL = "SELECT * FROM Utilisateurs WHERE email=?";
 	private static final String SQL_INSERT = "INSERT INTO UTILISATEURS (pseudo, nom, prenom, email, telephone, "
 			+ "rue, codePostal, ville, motDePasse, credit, administrateur) "
 			+ "values (?,?,?,?,?,?,?,?,?,0,0)";
@@ -23,21 +24,29 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	 * @return l'utilisateur existant
 	 * @throws BusinessException 
 	 */
+	@Override
 	public Utilisateur SelectByPseudo(String pseudo) throws BusinessException {
 		Utilisateur utilisateur = new Utilisateur();
 		try (Connection conn = ConnectionProvider.getConnection(); PreparedStatement ps = conn.prepareStatement(SELECT_BY_PSEUDO);) {
 			ps.setString(1, pseudo);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
-				String userPseudo = rs.getString("pseudo");
-				String motDePasse = rs.getString("motDePasse");
-				utilisateur.setPseudo(userPseudo);
-				utilisateur.setMotDePasse(motDePasse);
+				utilisateur.setUtilisateurId(rs.getInt("utilisateurId"));
+				utilisateur.setPseudo(rs.getString("pseudo"));
+				utilisateur.setMotDePasse(rs.getString("motDePasse"));
+				utilisateur.setNom(rs.getString("nom"));
+				utilisateur.setPrenom(rs.getString("prenom"));
+				utilisateur.setRue(rs.getString("rue"));
+				utilisateur.setCodePostal(rs.getString("codePostal"));
+				utilisateur.setVille(rs.getString("ville"));
+				utilisateur.setTelephone(rs.getString("telephone"));
+				utilisateur.setCredit(rs.getInt("credit"));
+				utilisateur.setAdministrateur(rs.getBoolean("administrateur"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			BusinessException businessException = new BusinessException();
-			businessException.ajouterErreur(CodesResultatDAL.SELECT_OBJECT_ECHEC);
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_USER_ECHEC);
 			throw businessException;
 		}
 		return utilisateur;
@@ -65,7 +74,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 			pstmt.executeUpdate();
 			ResultSet rs = pstmt.getGeneratedKeys();
 			if (rs.next()) {
-				utilisateur.setUtilisateurId(rs.getInt("idArticle"));
+				utilisateur.setUtilisateurId(rs.getInt(1));
 			}
 		}
 		catch(SQLException e) {
@@ -138,8 +147,30 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	}
 
 	@Override
-	public Utilisateur selectByEmail(String email) {
-		// TODO Auto-generated method stub
-		return null;
+	public Utilisateur selectByEmail(String email) throws BusinessException {
+		Utilisateur utilisateur = new Utilisateur();
+		try (Connection conn = ConnectionProvider.getConnection(); PreparedStatement ps = conn.prepareStatement(SELECT_BY_EMAIL);) {
+			ps.setString(1, email);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				utilisateur.setUtilisateurId(rs.getInt("utilisateurId"));
+				utilisateur.setPseudo(rs.getString("pseudo"));
+				utilisateur.setMotDePasse(rs.getString("motDePasse"));
+				utilisateur.setNom(rs.getString("nom"));
+				utilisateur.setPrenom(rs.getString("prenom"));
+				utilisateur.setRue(rs.getString("rue"));
+				utilisateur.setCodePostal(rs.getString("codePostal"));
+				utilisateur.setVille(rs.getString("ville"));
+				utilisateur.setTelephone(rs.getString("telephone"));
+				utilisateur.setCredit(rs.getInt("credit"));
+				utilisateur.setAdministrateur(rs.getBoolean("administrateur"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_USER_ECHEC);
+			throw businessException;
+		}
+		return utilisateur;
 	}
 }

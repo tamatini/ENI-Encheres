@@ -17,6 +17,7 @@ public abstract class CodesResultatBLL {
 	public static final int INSERT_USER_ZIPCODE_ERROR=20009;
 	public static final int INSERT_USER_CITY_ERROR=20010;
 	public static final int INSERT_USER_PASSWORD_ERROR=20011;
+	public static final int INSERT_USER_PASSWORD_OTHER=20012;
 	public static final int REGLE_PSEUDO_ERREUR=20020;
 
 }
