@@ -1,8 +1,23 @@
 package org.encheres.eni.bll;
 
-public class EncheresBLL {
+import org.encheres.eni.BusinessException;
+import org.encheres.eni.bo.Article;
+import org.encheres.eni.dal.DAO;
+import org.encheres.eni.dal.DAOFactory;
 
-	// Créer une vente
+public class EncheresBLL {
+	
+	private DAO<Article> articleDAO;
+
+	public EncheresBLL(DAO<Article> articleDAO) {
+		this.articleDAO = DAOFactory.getArticleDAO();
+	}
+	
+	// Ajouter un article
+	public void creerArticle(Article article) throws BusinessException {
+		this.articleDAO.insert(article);
+	}
+	
 	
 	// Mettre à jour une vente
 	

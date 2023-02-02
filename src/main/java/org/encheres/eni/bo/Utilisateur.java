@@ -1,7 +1,8 @@
 package org.encheres.eni.bo;
 
-/*
- * TODO créer la bo de la classe utilisateur
+/**
+ * @author Jeffrey TEAHUI
+ * @date 02/2022
  */
 public class Utilisateur {
 

@@ -67,6 +67,7 @@ public class SeConnecter extends HttpServlet {
 				} else {
 					listeCodesErreurs.add(CodesResultatServlets.MOT_DE_PASSE_ERREUR);
 					request.setAttribute("listeCodesErreur", listeCodesErreurs);
+					doGet(request, response);
 				}
 			} catch (BusinessException e) {
 				e.printStackTrace();
