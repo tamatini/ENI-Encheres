@@ -102,6 +102,40 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 				
 		return pseudo;
 	}
+// Méthode update
+	@Override
+	public void update(Utilisateur utilisateur) {
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement("UPDATE Utilisateurs SET pseudo = ?, nom = ?, prenom = ?, email = ?, telephone = ?, rue = ?, codePostal = ?, ville = ? WHERE utilisateurId = ?");
+			
+			pstmt.setString(1, utilisateur.getPseudo());
+			pstmt.setString(2, utilisateur.getNom().toUpperCase());
+			pstmt.setString(3, utilisateur.getPrenom());
+			pstmt.setString(4, utilisateur.getEmail());
+			pstmt.setString(5, utilisateur.getTelephone());
+			pstmt.setString(6, utilisateur.getRue());
+			pstmt.setString(7, utilisateur.getCodePostal());
+			pstmt.setString(8, utilisateur.getVille());
+			pstmt.setString(9, utilisateur.getMotDePasse());
+			pstmt.executeUpdate();
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+// Méthode Delete	
+	@Override
+	public void delete(int Id) {
+		try (Connection cnx = ConnectionProvider.getConnection()){
+			PreparedStatement pstmt = cnx.prepareStatement("DELETE FROM Utilisateurs WHERE utilisateurId = ?");
+			pstmt.setInt(1, Id);
+			pstmt.executeUpdate();
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	public Utilisateur selectByEmail(String email) {

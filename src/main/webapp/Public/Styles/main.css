@@ -309,9 +309,14 @@ header {
     margin-bottom: 5rem;
     border-radius: 4px;
     padding: 2rem 1.5rem;
-    box-shadow: 1px 1px 10px 1px #0018384a;
-      	
+    box-shadow: 1px 1px 10px 1px #0018384a;     	
 }
+
+.container div .form_button {
+	text-align:center;
+}
+
+
 
 footer {
   background-color: #272a36;
