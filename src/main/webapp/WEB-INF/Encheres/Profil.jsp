@@ -34,6 +34,15 @@
 	      <td>Ville : </td>
 	      <td>${ utilisateur.ville }</td>
 		</tr>    
-	</table>		
-</div>	
+	</table>
+	
+<!--<div>
+	<c:if test="{ utilisateur.utilisatuerId == user.utilisateurId }">	
+		<a class="form_button" href="/encheres/profil">Modifier</a>	
+	</c:if>
+</div>-->	
+	
+
+
+</div>
 <%@ include file="./Partials/Footer.jspf" %>

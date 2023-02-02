@@ -1,6 +1,7 @@
 package org.encheres.eni.servlets;
 
 import java.io.IOException;
+import java.sql.Connection;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.encheres.eni.bll.UtilisateurBLL;
 import org.encheres.eni.bo.Utilisateur;
+
 
 
 /**
@@ -26,15 +28,21 @@ public class Profil extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rq = request.getRequestDispatcher("/WEB-INF/Encheres/Profil.jsp");
 		UtilisateurBLL utilisateurBLL = new UtilisateurBLL();
-		if(!request.getParameter("id").equals("")) {
-			int utilisateurId = Integer.parseInt(request.getParameter("id"));
-			Utilisateur utilisateur = utilisateurBLL.afficherProfil(utilisateurId);
-			if(utilisateur.getUtilisateurId() != 0) {
-				System.out.println(utilisateur.getUtilisateurId());
-				request.setAttribute("utilisateur", utilisateur);
-				rq.forward(request, response);	
+		try {
+			if(!request.getParameter("id").equals("")) {
+				int utilisateurId = Integer.parseInt(request.getParameter("id"));
+				Utilisateur utilisateur = utilisateurBLL.afficherProfil(utilisateurId);
+				if(utilisateur.getUtilisateurId() != 0) {
+					System.out.println(utilisateur.getUtilisateurId());
+					request.setAttribute("utilisateur", utilisateur);
+					rq.forward(request, response);	
+				}
+			}else {
+				response.sendRedirect("/EniEncheres/encheres");
 			}
-		}else {
+			
+		}catch (Exception e) {
+			e.printStackTrace();
 			response.sendRedirect("/EniEncheres/encheres");
 		}
 	}
