@@ -21,9 +21,8 @@ public class SeDeconnecter extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
-		System.out.println(session.getAttribute("isConnected"));
-		if(session != null) {
-			
+		if(session.getAttribute("user") != null) {
+			session.invalidate();
 		}
 		response.sendRedirect("/ENIEncheres/encheres");
 	}
@@ -32,11 +31,5 @@ public class SeDeconnecter extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession(false);
-		System.out.println(session.getAttribute("isConnected"));
-		if(session != null) {
-			
-		}
 	}
-
 }

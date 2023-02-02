@@ -175,39 +175,7 @@ public class UtilisateurBLL {
 		return utilisateurDAO.selectById(utilisateurId);
 	}
 
-	public boolean seConnecter(String pseudo, String motDePasse) throws BusinessException {
-		BusinessException businessException = new BusinessException();
-		Utilisateur utilisateur = utilisateurDAO.SelectByPseudo(pseudo);
-		String utilisateurPseudo = utilisateur.getPseudo();
-		String utilisateurMotDePasse = utilisateur.getMotDePasse();
-		boolean response = false;
-		
-		if (pseudo.isEmpty() || motDePasse.isEmpty())  {
-			System.out.println("identifiant ou mot de passe vide");
-			businessException.ajouterErreur(CodesResultatBLL.REGLE_PSEUDO_ERREUR);
-		};
-		
-		
-		if (utilisateurPseudo == null) {
-			System.out.println("cet utilisateur n'existe pas");
-			businessException.ajouterErreur(CodesResultatBLL.REGLE_PSEUDO_ERREUR);
-		}
-		
-		if (utilisateurMotDePasse == null) {
-			System.out.println("cet utilisateur n'exite pas");
-			businessException.ajouterErreur(CodesResultatBLL.REGLE_PSEUDO_ERREUR);
-		}
-		
-		if (utilisateurMotDePasse != null && !utilisateurMotDePasse.equals(motDePasse)) {
-			businessException.ajouterErreur(CodesResultatBLL.REGLE_PSEUDO_ERREUR);
-		}
-		
-		if (!businessException.hasErreurs() 
-				&& utilisateur.getPseudo().equals(pseudo) 
-				&& utilisateur.getMotDePasse().equals(motDePasse)) {
-			response = true;
-		}
-		
-		return response;
+	public Utilisateur seConnecter(String pseudo) throws BusinessException {
+		return this.utilisateurDAO.SelectByPseudo(pseudo);
 	}
 }
