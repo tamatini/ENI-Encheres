@@ -115,7 +115,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	}
 // Méthode update
 	@Override
-	public void update(Utilisateur utilisateur) {
+	public void update(Utilisateur utilisateur) throws BusinessException {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement pstmt = cnx.prepareStatement("UPDATE Utilisateurs SET pseudo = ?, nom = ?, prenom = ?, email = ?, telephone = ?, rue = ?, codePostal = ?, ville = ?, motDePasse = ? WHERE utilisateurId = ?");
 			
@@ -134,12 +134,15 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 			
 		}catch (SQLException e) {
 			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.UPDATE_USER_ECHEC);
+			throw businessException;
 		}
 	}
 	
 // Méthode Delete	
 	@Override
-	public void delete(int Id) {
+	public void delete(int Id) throws BusinessException {
 		try (Connection cnx = ConnectionProvider.getConnection()){
 			PreparedStatement pstmt = cnx.prepareStatement("DELETE FROM Utilisateurs WHERE utilisateurId = ?");
 			pstmt.setInt(1, Id);
@@ -147,6 +150,9 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 			
 		}catch (SQLException e) {
 			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.DELETE_USER_ECHEC);
+			throw businessException;
 		}
 	}
 

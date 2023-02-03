@@ -49,7 +49,7 @@ TODO revoir le completion du champs email qui est reste vide
             <button type="submit" class="form_button">Enregistrer</button>
           </div>
           <div class="connect_input">
-            <a href="accueil.html" class="form_button no_account">Supprimer mon compte</a> <!--  TODO rediriger vers servlet suppression compte utilisateur et redirige vers accueil -->
+            <a href="${ pageContext.request.contextPath }/encheres/SupprimerMonCompte" class="form_button no_account">Supprimer mon compte</a>
           </div>
         </div>
       </form>

@@ -1,7 +1,7 @@
 package org.encheres.eni.servlets;
 
 import java.io.IOException;
-import java.sql.Connection;
+
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -32,6 +32,7 @@ public class Profil extends HttpServlet {
 			if(!request.getParameter("id").equals("")) {
 				int utilisateurId = Integer.parseInt(request.getParameter("id"));
 				Utilisateur utilisateur = utilisateurBLL.afficherProfil(utilisateurId);
+				request.setAttribute("titre", "Profil de " + utilisateur.getPseudo());
 				if(utilisateur.getUtilisateurId() != 0) {
 					System.out.println(utilisateur.getUtilisateurId());
 					request.setAttribute("utilisateur", utilisateur);
