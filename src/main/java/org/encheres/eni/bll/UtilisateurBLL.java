@@ -186,6 +186,10 @@ public class UtilisateurBLL {
 	}
 
 	public Utilisateur seConnecter(String pseudo) throws BusinessException {
-		return this.utilisateurDAO.SelectByPseudo(pseudo);
+		if (pseudo.contains("@")) {
+			return this.utilisateurDAO.selectByEmail(pseudo);
+		} else {
+			return this.utilisateurDAO.SelectByPseudo(pseudo);			
+		}
 	}
 }

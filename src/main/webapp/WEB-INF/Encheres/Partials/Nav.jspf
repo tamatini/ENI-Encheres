@@ -5,9 +5,9 @@
       <div>
       <c:choose>
       	<c:when test="${ sessionScope.user != null }">
-     		<span>Bienvenu <a href="encheres/profil?id=${ user.utilisateurId }">${ user.nom }</a></span>
+     		<span>Bienvenu <a href="${ pageContext.request.contextPath }/encheres/profil?id=${ user.utilisateurId }">${ user.nom }</a></span>
 	        <a class="nav_link" href="#">Enchères</a>
-	        <a class="nav_link" href="#">Vendre un article</a>
+	        <a class="nav_link" href="${ pageContext.request.contextPath }/encheres/ventearticle">Vendre un article</a>
 	        <a class="nav_link" href="${ pageContext.request.contextPath }/SeDeconnecter">Déconnexion</a>
       	</c:when>
       	<c:when test="${ sessionScope.user == null }">
