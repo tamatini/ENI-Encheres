@@ -1,3 +1,7 @@
+<!-- 
+TODO bonton modifier doit s'afficher quand c'est le user est connecté
+ -->
+
 <%@ include file="./Partials/Header.jspf" %>
 <link rel="stylesheet" href="../Public/Styles/main.css">
 <div class="container">
@@ -35,10 +39,10 @@
 	      <td>${ utilisateur.ville }</td>
 		</tr>    
 	</table>
+		<a class="form_button" href="${pageContext.request.contextPath}/encheres/ModifierProfil">Modifier</a>	
 	
 <!--<div>
 	<c:if test="{ utilisateur.utilisatuerId == user.utilisateurId }">	
-		<a class="form_button" href="/encheres/profil">Modifier</a>	
 	</c:if>
 </div>-->	
 	
