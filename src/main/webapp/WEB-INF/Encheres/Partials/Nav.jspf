@@ -7,12 +7,12 @@
       	<c:when test="${ sessionScope.user != null }">
      		<span>Bienvenue <a href="${ pageContext.request.contextPath }/encheres/profil?id=${ user.utilisateurId }">${ user.nom }</a></span>
 	        <a class="nav_link" href="#">Enchères</a>
-	        <a class="nav_link" href="${ pageContext.request.contextPath }/encheres/ventearticle">Vendre un article</a>
-	        <a class="nav_link" href="${ pageContext.request.contextPath }/SeDeconnecter">Déconnexion</a>
+	        <a class="nav_link" href="${ pageContext.request.contextPath }/encheres/nouvelArticle">Vendre un article</a>
+	        <a class="nav_link" href="${ pageContext.request.contextPath }/encheres/SeDeconnecter">Déconnexion</a>
       	</c:when>
       	<c:when test="${ sessionScope.user == null }">
         	<a class="nav_link" href="${pageContext.request.contextPath}/encheres/inscription">S'inscrire</a>
-        	<a class="nav_link" href="${ pageContext.request.contextPath }/seconnecter ">Se Connecter</a>      	
+        	<a class="nav_link" href="${ pageContext.request.contextPath }/encheres/SeConnecter ">Se Connecter</a>      	
       	</c:when>
       </c:choose>
       </div>

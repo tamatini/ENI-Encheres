@@ -19,5 +19,12 @@ public abstract class CodesResultatBLL {
 	public static final int INSERT_USER_PASSWORD_ERROR=20011;
 	public static final int INSERT_USER_PASSWORD_OTHER=20012;
 	public static final int REGLE_PSEUDO_ERREUR=20020;
-
+	public static final int REGLE_MOT_DE_PASSE_ERREUR=20013;
+	
+	
+	/* Erreur BLL article */
+	public static final int REGLE_ARTICLE_DATE_ERREUR=20030;
+	public static final int REGLE_ARTICLE_PRIX_ERREUR=20031;
+	public static final int REGLE_ARTICLE_DESCRIPTION_ERREUR=20032;
+	
 }

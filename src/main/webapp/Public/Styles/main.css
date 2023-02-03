@@ -338,16 +338,28 @@ footer div a {
 .erreurs {
 	color: red;
     background: #ffcccc;
-    padding: 0.5rem 0.8rem;
+    padding: 1rem 1rem;
     border-radius: 4px;
     position: absolute;
-    width: 250px;
-    text-align: center;
+    width: 280px;
     line-height: 1.4rem;
     top: 100px;
     margin: auto;
     left: 0;
     right: 0;
+}
+
+.erreurs>ul {
+	margin-top: 2rem;
+}
+
+.erreurs>ul>li {
+	margin-left: 1rem;
+}
+
+.erreurs>a {
+	float:right;
+	color: red;
 }
 
 

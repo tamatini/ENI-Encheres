@@ -1,5 +1,15 @@
 <%@ include file="./Partials/Header.jspf" %>
 	<div class="container">
+		<c:if test="${ !empty listeCodesErreurs }" >
+			<div class="erreurs" id="msg">
+				<a href="" onclick="clearMessage()">Fermer x</a>
+				<ul>
+			 		<c:forEach items="${ listeCodesErreurs }" var="erreur">
+						<li>${ LecteurMessage.getMessageErreur(erreur) }</li>
+					</c:forEach>
+				</ul>		
+			</div>
+		</c:if>
 		<form class="create_form" method="post">
 			<div>
 				<img alt="" src="" >
@@ -17,10 +27,11 @@
 					<label class="form_label">Catégorie</label>
 					<select class="form_input" name="categorieId" id="categorieId">
 						<option value="">--Sélectionner une catégories--</option>
-						<option value="1">Informatique</option>
-						<option value="2">Informatique</option>
-						<option value="3">Informatique</option>
-						<option value="4">Informatique</option>
+						<c:if test="${ !empty categories }" >
+					 		<c:forEach items="${ categories }" var="categorie">
+								<option value="${ categorie.categorieId }">${ categorie.libelle }</option>
+							</c:forEach>
+						</c:if>
 					</select>
 				</div>
 				<div class="form_create_section">
@@ -28,8 +39,8 @@
 					<input  type="file" value="UPLOADER" name="image" id="imageArticle">
 				</div>
 				<div class="form_create_section">
-					<label class="form_label" for="prixVente">Mise à prix :</label>
-					<input class="form_input" type="number" name="prixVente" id="prixVente">
+					<label class="form_label" for="prixInitial">Mise à prix :</label>
+					<input class="form_input" type="number" name="prixInitial" id="prixInitial">
 				</div>
 				<div class="form_create_section">
 					<label class="form_label" for="dateDebut">Début de l'enchère :</label>
@@ -61,4 +72,10 @@
 			</div>
 		</form>
 	</div>
+	<script>
+		function clearMessage() {
+			var msg = document.getElementById("msg");
+			msg.style.display = "none";
+		}
+	</script>
 <%@ include file="./Partials/Footer.jspf" %>

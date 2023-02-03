@@ -3,7 +3,6 @@ package org.encheres.eni.servlets;
 import java.io.IOException;
 import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.encheres.eni.BusinessException;
+import org.encheres.eni.bll.CategorieBLL;
 import org.encheres.eni.bll.EncheresBLL;
-import org.encheres.eni.bo.Article;
+import org.encheres.eni.bo.Categorie;
 import org.encheres.eni.bo.Utilisateur;
 
 
@@ -28,7 +28,11 @@ import org.encheres.eni.bo.Utilisateur;
 /**
  * Servlet implementation class VenteArticle
  */
-@WebServlet("/encheres/ventearticle")
+@WebServlet(urlPatterns={
+		"/encheres/nouvelArticle",
+		"/encheres/supprimerArticle"
+	})
+
 public class VenteArticle extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -36,10 +40,20 @@ public class VenteArticle extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rq = request.getRequestDispatcher("/WEB-INF/Encheres/AjouterArticle.jsp");
-		request.setAttribute("titre", "Vendre un article");
+		if (request.getServletPath().equals("/encheres/nouvelArticle")) {
+			List<Integer> listeCodesErreurs = new ArrayList<>();
+			if (listeCodesErreurs.size() > 0) {
+				request.setAttribute("listeCodesErreurs", listeCodesErreurs);
+			} else {
+				listeCategories(request, listeCodesErreurs);
+				request.setAttribute("titre", "Vendre un article");				
+			}
+		} else if (request.getServletPath().equals("/encheres/supprimerArticle")) {
+			System.out.println("supprimer article");
+		}
 		
-		rq.forward(request, response);
+		RequestDispatcher rq = request.getRequestDispatcher("/WEB-INF/Encheres/AjouterArticle.jsp");
+		rq.forward(request, response);				
 	}
 
 	/**
@@ -48,7 +62,7 @@ public class VenteArticle extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Integer> listeCodesErreurs = new ArrayList<>();
 		String nomArticle, description;
-		int categorieId, prixVente, vendeurId;
+		int categorieId, prixInitial, prixVente, vendeurId;
 		LocalDate dateDebutEnchere, dateFinEnchere;
 		
 		
@@ -56,7 +70,8 @@ public class VenteArticle extends HttpServlet {
 		description = this.description(request, listeCodesErreurs);
 		dateDebutEnchere = this.dateDebutEnchere(request, listeCodesErreurs);
 		dateFinEnchere = this.dateFinEnchere(request, listeCodesErreurs);
-		prixVente = this.prixVente(request, listeCodesErreurs);
+		prixInitial = this.prixInitial(request, listeCodesErreurs);
+		prixVente = prixInitial;
 		categorieId = this.categorieId(request, listeCodesErreurs);
 		vendeurId = this.vendeurId(request, listeCodesErreurs);
 		
@@ -65,23 +80,32 @@ public class VenteArticle extends HttpServlet {
 		//String rue = (String)request.getAttribute("rue");
 		//String codePostal = (String)request.getAttribute("codePostal");
 		//String ville = (String)request.getAttribute("ville");
-		//article = new Article(nomArticle, description, dateDebutEnchere, dateFinEnchere, 0, prixVente, ven);
+		//article = new Article(nomArticle, description, dateDebutEnchere, dateFinEnchere, 0, prixInitial, ven);
 		
 		if (listeCodesErreurs.size() > 0) {
 			request.setAttribute("listeCodesErreurs", listeCodesErreurs);
-	
 		} else {
 			EncheresBLL encheresBLL = new EncheresBLL();
-			Article article = new Article(nomArticle, description, dateDebutEnchere, dateFinEnchere, 0, 
-					prixVente, vendeurId, categorieId);
 			try {
-				encheresBLL.creerArticle(article);
+				encheresBLL.creerArticle(nomArticle, description, dateDebutEnchere, dateFinEnchere, prixInitial, prixVente, vendeurId, categorieId);
+				listeCategories(request, listeCodesErreurs);
 			} catch (BusinessException e) {
 				e.printStackTrace();
 				request.setAttribute("listeCodesErreurs", e.getListeCodesErreur());
 			}			
 		}
-		doGet(request, response);
+		RequestDispatcher rq = request.getRequestDispatcher("/WEB-INF/Encheres/AjouterArticle.jsp");
+		rq.forward(request, response);	
+	}
+	
+	private void listeCategories(HttpServletRequest request, List<Integer> listeCodesErreurs) {
+		try {
+			CategorieBLL categorieBLL = new CategorieBLL();
+			request.setAttribute("categories", categorieBLL.listeCategorie());
+		} catch (BusinessException e) {
+			e.printStackTrace();
+			request.setAttribute("listeCodesErreurs", listeCodesErreurs);
+		}		
 	}
 	
 	/**
@@ -134,22 +158,22 @@ public class VenteArticle extends HttpServlet {
 	}
 	
 	/**
-	 * Vérifie si le champ prixVente n'est pas vide
+	 * Vérifie si le champ prixInitial n'est pas vide
 	 * @param request la requête
 	 * @param listeCodesErreurs la liste des codes des erreurs
-	 * @return le prix de vente
+	 * @return le prix de Initial
 	 */
-	private int prixVente(HttpServletRequest request, List<Integer> listeCodesErreurs) {
-		int prixVente = 0;
+	private int prixInitial(HttpServletRequest request, List<Integer> listeCodesErreurs) {
+		int prixInitial = 0;
 		try {
-			if (request.getParameter("prixVente") != null || Integer.parseInt(request.getParameter("prixVente")) != 0) {
-				prixVente = Integer.parseInt(request.getParameter("prixVente"));
+			if (request.getParameter("prixInitial") != null || Integer.parseInt(request.getParameter("prixInitial")) != 0) {
+				prixInitial = Integer.parseInt(request.getParameter("prixInitial"));
 			}
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
-			listeCodesErreurs.add(CodesResultatServlets.PRIX_VENTE_OBLIGATOIRE);
+			listeCodesErreurs.add(CodesResultatServlets.PRIX_INITIAL_OBLIGATOIRE);
 		}
-		return prixVente;
+		return prixInitial;
 	}
 	
 	/**

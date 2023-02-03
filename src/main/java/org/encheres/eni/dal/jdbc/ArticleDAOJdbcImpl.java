@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 import org.encheres.eni.BusinessException;
 import org.encheres.eni.bo.Article;
@@ -55,5 +56,11 @@ public class ArticleDAOJdbcImpl implements DAO<Article>{
 	public void delete(int id) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public List<Article> selectAll() throws BusinessException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

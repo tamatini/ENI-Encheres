@@ -19,7 +19,10 @@ import org.encheres.eni.bo.Utilisateur;
 /**
  * Servlet implementation class SeConnecter
  */
-@WebServlet("/seconnecter")
+@WebServlet(urlPatterns={
+		"/encheres/SeConnecter",
+		"/encheres/SeDeconnecter"
+	})
 public class SeConnecter extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -27,13 +30,20 @@ public class SeConnecter extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rq = request.getRequestDispatcher("/WEB-INF/Encheres/SeConnecter.jsp");
-		request.setAttribute("titre", "Se connecter");
-		HttpSession session = request.getSession();
-		if (session.getAttribute("user") != null) {
-			response.sendRedirect(request.getContextPath() + "/encheres");			
-		} else {
+		if (request.getServletPath().equals("/encheres/SeConnecter" )) {
+			List <Integer> listeCodesErreurs = new ArrayList<>();
+			request.setAttribute("titre", "Se connecter");
+			if (listeCodesErreurs.size() > 0) {
+				request.setAttribute("listesCodesErreurs", listeCodesErreurs);
+			}
+			RequestDispatcher rq = request.getRequestDispatcher("/WEB-INF/Encheres/SeConnecter.jsp");
 			rq.forward(request, response);			
+		} else if (request.getServletPath().equals("/encheres/SeDeconnecter")) {
+			HttpSession session = request.getSession(false);
+			if (session.getAttribute("user") != null) {
+				session.invalidate();				
+			}
+			response.sendRedirect(request.getContextPath()+"/encheres");
 		}
 	}
 
@@ -45,38 +55,46 @@ public class SeConnecter extends HttpServlet {
 		RequestDispatcher rq = request.getRequestDispatcher("/WEB-INF/Encheres/SeConnecter.jsp");
 		
 		UtilisateurBLL utilisateurBLL = new UtilisateurBLL();
-		String pseudo = request.getParameter("pseudo");
-		String motDePasse = request.getParameter("motDePasse");
+		String pseudo, motDePasse;
 		List<Integer> listeCodesErreurs = new ArrayList<>();
 
-		if (pseudo.isEmpty()) {
-			listeCodesErreurs.add(CodesResultatServlets.PSEUDO_OBLIGATOIRE);
-		}
-		
-		if (motDePasse.isEmpty() ) {
-			listeCodesErreurs.add(CodesResultatServlets.MOT_DE_PASSE_OBLIGATOIRE);
-		}
+		pseudo = this.pseudo(request, listeCodesErreurs);
+		motDePasse = this.motDePasse(request, listeCodesErreurs);
 		
 		if (listeCodesErreurs.size() > 0) {
 			request.setAttribute("listeCodesErreurs", listeCodesErreurs);
 		} else {
 			try {
-				Utilisateur utilisateur = utilisateurBLL.seConnecter(pseudo);
-				if (utilisateur != null && motDePasse.equals(utilisateur.getMotDePasse())) {
+				Utilisateur utilisateur = utilisateurBLL.seConnecter(pseudo, motDePasse);
+				if (utilisateur != null) {
 					HttpSession session = request.getSession();
 					session.setAttribute("user", utilisateur);
-					rq = request.getRequestDispatcher("/encheres");
-				} else {
-					listeCodesErreurs.add(CodesResultatServlets.MOT_DE_PASSE_ERREUR);
-					request.setAttribute("listeCodesErreur", listeCodesErreurs);
-					doGet(request, response);
+					response.sendRedirect(request.getContextPath()+"/encheres");
 				}
 			} catch (BusinessException e) {
 				e.printStackTrace();
-				listeCodesErreurs.add(30032);
+				request.setAttribute("listeCodesErreurs", e.getListeCodesErreur());
+				rq.forward(request, response);
 			}
 		}
-		rq.forward(request, response);
 	}
-
+	
+	private String pseudo(HttpServletRequest request, List<Integer> listeCodesErreurs) {
+		String pseudo;
+		pseudo = request.getParameter("pseudo");
+		if (pseudo == null || pseudo.trim().equals("")) {
+			listeCodesErreurs.add(CodesResultatServlets.PSEUDO_OBLIGATOIRE);
+		}
+		return pseudo;
+	}
+	
+	private String motDePasse(HttpServletRequest request, List<Integer> listeCodesErreurs) {
+		String motDePasse;
+		motDePasse = request.getParameter("motDePasse");
+		if (motDePasse == null || motDePasse.trim().equals("")) {
+			listeCodesErreurs.add(CodesResultatServlets.MOT_DE_PASSE_OBLIGATOIRE);
+		}
+		return motDePasse;
+	}
+	
 }
