@@ -40,11 +40,12 @@
             <button type="submit" class="form_button">Connexion</button>
           </div>
           <div class="connect_input">
-            <a href="accueil.html" class="form_button no_account">Annuler</a>
+            <a href="${pageContext.request.contextPath}/encheres" class="form_button no_account">Annuler</a>
           </div>
         </div>
       </form>
       
+      <!-- TODO : mettre en forme les messages d'erreur -->
       <c:if test="${! empty Liste_codes_erreurs}">
       	<p>Erreurs !</p>
       	<ul>

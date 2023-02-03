@@ -28,9 +28,10 @@ public class SeConnecter extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rq = request.getRequestDispatcher("/WEB-INF/Encheres/SeConnecter.jsp");
-		HttpSession session = request.getSession(false);
-		if (session.getAttribute("utilisateur") != null) {
-			response.sendRedirect("/ENIEncheres/encheres");			
+		request.setAttribute("titre", "Se connecter");
+		HttpSession session = request.getSession();
+		if (session.getAttribute("user") != null) {
+			response.sendRedirect(request.getContextPath() + "/encheres");			
 		} else {
 			rq.forward(request, response);			
 		}

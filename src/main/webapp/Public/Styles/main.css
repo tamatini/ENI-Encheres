@@ -103,7 +103,7 @@ header {
 
 .form_label {
   margin-left: 2em;
-  width: 200px;
+  width: 350px;
 }
 
 .form_search_section {
@@ -221,6 +221,9 @@ header {
 .form_create_section {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  margin-top: .5rem;
+  margin-bottom: .5rem;
 }
 
 .create_form_controls {

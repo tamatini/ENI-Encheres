@@ -9,7 +9,7 @@ public class EncheresBLL {
 	
 	private DAO<Article> articleDAO;
 
-	public EncheresBLL(DAO<Article> articleDAO) {
+	public EncheresBLL() {
 		this.articleDAO = DAOFactory.getArticleDAO();
 	}
 	

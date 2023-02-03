@@ -1,6 +1,6 @@
 package org.encheres.eni.bo;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 /**
  * @author Jeffrey TEAHUI
@@ -10,8 +10,8 @@ public class Article {
 	private int articleId;
 	private String nomArticle;
 	private String description;
-	private LocalDateTime dateDebutEncheres;
-	private LocalDateTime dateFinEncheres;
+	private LocalDate dateDebutEncheres;
+	private LocalDate dateFinEncheres;
 	private int prixInitial;
 	private int prixVente;
 	private int vendeurId;
@@ -35,8 +35,8 @@ public class Article {
 	 * @param vendeurId le vendeur
 	 * @param categoryId la catégorie
 	 */
-	public Article(String nomArticle, String description, LocalDateTime dateDebutEncheres,
-			LocalDateTime dateFinEncheres, int prixInitial, int prixVente, int vendeurId, int categoryId) {
+	public Article(String nomArticle, String description, LocalDate dateDebutEncheres,
+			LocalDate dateFinEncheres, int prixInitial, int prixVente, int vendeurId, int categoryId) {
 		super();
 		this.setNomArticle(nomArticle);
 		this.setDescription(description);
@@ -60,8 +60,8 @@ public class Article {
 	 * @param vendeurId le vendeur
 	 * @param categoryId la catégorie
 	 */
-	public Article(int articleId, String nomArticle, String description, LocalDateTime dateDebutEncheres,
-			LocalDateTime dateFinEncheres, int prixInitial, int prixVente, int vendeurId, int categoryId) {
+	public Article(int articleId, String nomArticle, String description, LocalDate dateDebutEncheres,
+			LocalDate dateFinEncheres, int prixInitial, int prixVente, int vendeurId, int categoryId) {
 		this(nomArticle, description, dateDebutEncheres, dateFinEncheres, prixInitial, prixVente, vendeurId, categoryId);
 		this.setArticleId(articleId);
 	}
@@ -113,28 +113,28 @@ public class Article {
 	/**
 	 * @return la date de début des enchères
 	 */
-	public LocalDateTime getDateDebutEncheres() {
+	public LocalDate getDateDebutEncheres() {
 		return dateDebutEncheres;
 	}
 	
 	/**
 	 * @param dateDebutEncheres la date de début des enchères
 	 */
-	public void setDateDebutEncheres(LocalDateTime dateDebutEncheres) {
+	public void setDateDebutEncheres(LocalDate dateDebutEncheres) {
 		this.dateDebutEncheres = dateDebutEncheres;
 	}
 	
 	/**
 	 * @return la date de fin des enchères
 	 */
-	public LocalDateTime getDateFinEncheres() {
+	public LocalDate getDateFinEncheres() {
 		return dateFinEncheres;
 	}
 	
 	/**
 	 * @param dateFinEncheres la date des fin des enchères
 	 */
-	public void setDateFinEncheres(LocalDateTime dateFinEncheres) {
+	public void setDateFinEncheres(LocalDate dateFinEncheres) {
 		this.dateFinEncheres = dateFinEncheres;
 	}
 	
