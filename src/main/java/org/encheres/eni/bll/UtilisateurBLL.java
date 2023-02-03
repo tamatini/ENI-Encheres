@@ -10,8 +10,7 @@ public class UtilisateurBLL {
 	private UtilisateurDAO utilisateurDAO;
 	
 	/**
-	 * Constructeur
-	 * @param utilisateurDAO
+	 * Constructeur d'utilisateurBLL
 	 */
 	public UtilisateurBLL() {
 		this.utilisateurDAO = (UtilisateurDAO) DAOFactory.getUtilisateurDAO();
@@ -253,11 +252,38 @@ public class UtilisateurBLL {
 		return utilisateurDAO.selectById(utilisateurId);
 	}
 
-	public Utilisateur seConnecter(String pseudo) throws BusinessException {
-		if (pseudo.contains("@")) {
-			return this.utilisateurDAO.selectByEmail(pseudo);
+	public Utilisateur seConnecter(String pseudo, String motDePasse) throws BusinessException {
+		BusinessException businessException = new BusinessException();
+		Utilisateur utilisateur;
+		validerUtilisateur(selectionnerUtilisateur(pseudo), businessException);
+		validerMotDePasse(motDePasse, selectionnerUtilisateur(pseudo).getMotDePasse(), businessException);
+		if (!businessException.hasErreurs()) {
+			utilisateur = selectionnerUtilisateur(pseudo);			
 		} else {
-			return this.utilisateurDAO.SelectByPseudo(pseudo);			
+			throw businessException;
+		}
+		return utilisateur;
+	}
+	
+	private Utilisateur selectionnerUtilisateur(String pseudo) throws BusinessException {
+		Utilisateur utilisateur;
+		if (pseudo.contains("@")) {
+			utilisateur = this.utilisateurDAO.selectByEmail(pseudo);
+		} else {
+			utilisateur = this.utilisateurDAO.SelectByPseudo(pseudo);
+		}
+		return utilisateur;
+	}
+	
+	private void validerUtilisateur(Utilisateur utilisateur, BusinessException businessException) {
+		if (utilisateur.getUtilisateurId() == 0) {
+			businessException.ajouterErreur(CodesResultatBLL.REGLE_PSEUDO_ERREUR);
+		}
+	}
+	
+	private void validerMotDePasse(String motDePasseSaisie, String motDePasseUtilisateur, BusinessException businessException) {
+		if (!motDePasseSaisie.equals(motDePasseUtilisateur)) {
+			businessException.ajouterErreur(CodesResultatBLL.REGLE_MOT_DE_PASSE_ERREUR);
 		}
 	}
 }

@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 import org.encheres.eni.BusinessException;
 import org.encheres.eni.bo.Utilisateur;
@@ -176,5 +177,11 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 			throw businessException;
 		}
 		return utilisateur;
+	}
+
+	@Override
+	public List<Utilisateur> selectAll() throws BusinessException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
