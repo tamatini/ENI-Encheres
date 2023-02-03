@@ -47,24 +47,20 @@ public class UtilisateurBLL {
 		}
 		if (nouvelUtilisateur.getNom() == null || nouvelUtilisateur.getNom().isBlank()) {
 			businessException.ajouterErreur(CodesResultatBLL.INSERT_FIELD_NULL);
-		}
-		if (!isAlphabetic(nouvelUtilisateur.getNom()) || nouvelUtilisateur.getNom().length() > 30) {
+		} else if (!isAlphabetic(nouvelUtilisateur.getNom()) || nouvelUtilisateur.getNom().length() > 30) {
 			businessException.ajouterErreur(CodesResultatBLL.INSERT_USER_NAME_ERROR);
 		}
 		if (nouvelUtilisateur.getPrenom() == null || nouvelUtilisateur.getPrenom().isBlank()) {
 			businessException.ajouterErreur(CodesResultatBLL.INSERT_FIELD_NULL);
-		}
-		if (!isAlphabetic(nouvelUtilisateur.getPrenom()) || nouvelUtilisateur.getPrenom().length() > 30) {
+		} else if (!isAlphabetic(nouvelUtilisateur.getPrenom()) || nouvelUtilisateur.getPrenom().length() > 30) {
 			businessException.ajouterErreur(CodesResultatBLL.INSERT_USER_FIRSTNAME_ERROR);
 		}
 		if (nouvelUtilisateur.getEmail() == null || nouvelUtilisateur.getEmail().isBlank()) {
 			businessException.ajouterErreur(CodesResultatBLL.INSERT_FIELD_NULL);
-		}
-		if (!isEmailFormat(nouvelUtilisateur.getEmail()) || nouvelUtilisateur.getEmail().length() > 20) {
+		} else if (!isEmailFormat(nouvelUtilisateur.getEmail()) || nouvelUtilisateur.getEmail().length() > 20) {
 			businessException.ajouterErreur(CodesResultatBLL.INSERT_USER_EMAIL_ERROR);
 		}
-		// A modifier quand la méthode sera finalisée
-		if (utilisateurDAO.selectByEmail(nouvelUtilisateur.getEmail()) != null) {
+		if (utilisateurDAO.selectByEmail(nouvelUtilisateur.getEmail()).getEmail() != null) {
 			businessException.ajouterErreur(CodesResultatBLL.INSERT_USER_EMAIL_OTHER);
 		}
 		if (nouvelUtilisateur.getTelephone() != null && !nouvelUtilisateur.getTelephone().isBlank()) {
@@ -74,26 +70,22 @@ public class UtilisateurBLL {
 		}
 		if (nouvelUtilisateur.getRue() == null || nouvelUtilisateur.getRue().isBlank()) {
 			businessException.ajouterErreur(CodesResultatBLL.INSERT_FIELD_NULL);
-		}
-		if (nouvelUtilisateur.getRue().length() > 30) {
+		} else if (nouvelUtilisateur.getRue().length() > 30) {
 			businessException.ajouterErreur(CodesResultatBLL.INSERT_USER_STREET_ERROR);
 		}
 		if (nouvelUtilisateur.getCodePostal() == null || nouvelUtilisateur.getCodePostal().isBlank()) {
 			businessException.ajouterErreur(CodesResultatBLL.INSERT_FIELD_NULL);
-		}
-		if (!isNumeric(nouvelUtilisateur.getCodePostal()) || nouvelUtilisateur.getCodePostal().length() > 10) {
+		} else if (!isNumeric(nouvelUtilisateur.getCodePostal()) || nouvelUtilisateur.getCodePostal().length() > 10) {
 			businessException.ajouterErreur(CodesResultatBLL.INSERT_USER_ZIPCODE_ERROR);
 		}
 		if (nouvelUtilisateur.getVille() == null || nouvelUtilisateur.getVille().isBlank()) {
 			businessException.ajouterErreur(CodesResultatBLL.INSERT_FIELD_NULL);
-		}
-		if (nouvelUtilisateur.getVille().length() > 30) {
+		} else if (nouvelUtilisateur.getVille().length() > 30) {
 			businessException.ajouterErreur(CodesResultatBLL.INSERT_USER_CITY_ERROR);
 		}
 		if (nouvelUtilisateur.getMotDePasse() == null || nouvelUtilisateur.getMotDePasse().isBlank()) {
 			businessException.ajouterErreur(CodesResultatBLL.INSERT_FIELD_NULL);
-		}
-		if (!isValidPassword(nouvelUtilisateur.getMotDePasse()) || nouvelUtilisateur.getMotDePasse().length() < 8 || nouvelUtilisateur.getMotDePasse().length() > 30) {
+		} else if (!isValidPassword(nouvelUtilisateur.getMotDePasse()) || nouvelUtilisateur.getMotDePasse().length() < 8 || nouvelUtilisateur.getMotDePasse().length() > 30) {
 			businessException.ajouterErreur(CodesResultatBLL.INSERT_USER_PASSWORD_ERROR);
 		}
 		if (!nouvelUtilisateur.getMotDePasse().equals(controle_motDePasse)) {
@@ -125,7 +117,7 @@ public class UtilisateurBLL {
 	 */
 	public boolean isAlphabetic(String s) {
 		// TODO gérer les accents
-		return s != null && s.matches("^[a-zA-Z]*$");
+		return s != null && s.matches("^[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ._\\s-]*$");
 	}
 	
 	/**
@@ -167,13 +159,15 @@ public class UtilisateurBLL {
 	 */
 	public boolean isValidPassword(String s) {
 		// ^                 # start-of-string
-		// (?=.*[0-9])       # a digit must occur at least once
+		// (?=.*\d)          # a digit must occur at least once
 		// (?=.*[a-z])       # a lower case letter must occur at least once
 		// (?=.*[A-Z])       # an upper case letter must occur at least once
 		// (?=.*[@#$%^&+=])  # a special character must occur at least once
 		// (?=\S+$)          # no whitespace allowed in the entire string
+		// .*				 # repeat all the characters as many as you want
 		// $                 # end-of-string
-		return s != null && s.matches("^(?=.*\\d)(?=.*[a-z])(?=.*[@*#$%^&+=])(?=.*[A-Z]).*$");
+		return s != null && s.matches("^(?=.*\\d)(?=.*[a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ])"
+				+ "(?=.*[@*#$%^&+=/.?%-])(?=.*[A-ZÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ])(?=\\S+$).*$");
 	}
 	
 	// Mettre à jour un utilisateur
