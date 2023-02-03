@@ -177,8 +177,82 @@ public class UtilisateurBLL {
 	}
 	
 	// Mettre à jour un utilisateur
+	public void modifierUtilisateur(Utilisateur user, String controle_motDePasse, String nouveauPseudo, String nouveauEmail) throws BusinessException {
+		BusinessException businessException = new BusinessException();
+		
+		if (user.getPseudo() == null || user.getPseudo().isBlank()) {
+			businessException.ajouterErreur(CodesResultatBLL.INSERT_FIELD_NULL);
+		} else if (!isAlphaNumeric(user.getPseudo()) || user.getPseudo().length() > 30) {
+			businessException.ajouterErreur(CodesResultatBLL.INSERT_USER_PSEUDO_ERROR);
+		}
+		if(!user.getPseudo().equals(nouveauPseudo)){
+			if (utilisateurDAO.SelectByPseudo(user.getPseudo()).getPseudo() != null) {
+				businessException.ajouterErreur(CodesResultatBLL.INSERT_USER_PSEUDO_OTHER);	
+			} else {
+				user.setPseudo(nouveauPseudo);
+			}
+		}
+		if (user.getNom() == null || user.getNom().isBlank()) {
+			businessException.ajouterErreur(CodesResultatBLL.INSERT_FIELD_NULL);
+		} else if (!isAlphabetic(user.getNom()) || user.getNom().length() > 30) {
+			businessException.ajouterErreur(CodesResultatBLL.INSERT_USER_NAME_ERROR);
+		}
+		if (user.getPrenom() == null || user.getPrenom().isBlank()) {
+			businessException.ajouterErreur(CodesResultatBLL.INSERT_FIELD_NULL);
+		} else if (!isAlphabetic(user.getPrenom()) || user.getPrenom().length() > 30) {
+			businessException.ajouterErreur(CodesResultatBLL.INSERT_USER_FIRSTNAME_ERROR);
+		}
+		if (user.getEmail() == null || user.getEmail().isBlank()) {
+			businessException.ajouterErreur(CodesResultatBLL.INSERT_FIELD_NULL);
+		} else if (!isEmailFormat(user.getEmail()) || user.getEmail().length() > 20) {
+			businessException.ajouterErreur(CodesResultatBLL.INSERT_USER_EMAIL_ERROR);
+		}
+		if(!user.getEmail().equals(nouveauEmail)){
+			if (utilisateurDAO.selectByEmail(user.getEmail()).getEmail() != null) {
+				businessException.ajouterErreur(CodesResultatBLL.INSERT_USER_EMAIL_OTHER);
+			} else {
+				user.setEmail(nouveauEmail);
+			}
+		}
+		if (user.getTelephone() != null && !user.getTelephone().isBlank()) {
+			if (!isPhoneFormat(user.getTelephone()) || user.getTelephone().length() > 15) {
+				businessException.ajouterErreur(CodesResultatBLL.INSERT_USER_PHONE_ERROR);
+			}
+		}
+		if (user.getRue() == null || user.getRue().isBlank()) {
+			businessException.ajouterErreur(CodesResultatBLL.INSERT_FIELD_NULL);
+		} else if (user.getRue().length() > 30) {
+			businessException.ajouterErreur(CodesResultatBLL.INSERT_USER_STREET_ERROR);
+		}
+		if (user.getCodePostal() == null || user.getCodePostal().isBlank()) {
+			businessException.ajouterErreur(CodesResultatBLL.INSERT_FIELD_NULL);
+		} else if (!isNumeric(user.getCodePostal()) || user.getCodePostal().length() > 10) {
+			businessException.ajouterErreur(CodesResultatBLL.INSERT_USER_ZIPCODE_ERROR);
+		}
+		if (user.getVille() == null || user.getVille().isBlank()) {
+			businessException.ajouterErreur(CodesResultatBLL.INSERT_FIELD_NULL);
+		} else if (user.getVille().length() > 30) {
+			businessException.ajouterErreur(CodesResultatBLL.INSERT_USER_CITY_ERROR);
+		}
+		if (user.getMotDePasse() == null || user.getMotDePasse().isBlank()) {
+			businessException.ajouterErreur(CodesResultatBLL.INSERT_FIELD_NULL);
+		} else if (!isValidPassword(user.getMotDePasse()) || user.getMotDePasse().length() < 8 || user.getMotDePasse().length() > 30) {
+			businessException.ajouterErreur(CodesResultatBLL.INSERT_USER_PASSWORD_ERROR);
+		}
+		if (!user.getMotDePasse().equals(controle_motDePasse)) {
+			businessException.ajouterErreur(CodesResultatBLL.INSERT_USER_PASSWORD_OTHER);
+		}
+		
+		if(businessException.hasErreurs())
+		{
+			throw businessException;
+		} else {
+			this.utilisateurDAO.update(user);
+		}
+	}
 	
 	// Supprimer un utilisateur
+	
 	
 	// Voir un utilisateur
 	public Utilisateur afficherProfil (int utilisateurId) {
