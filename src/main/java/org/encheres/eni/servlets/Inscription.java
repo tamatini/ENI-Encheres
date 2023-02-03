@@ -61,6 +61,9 @@ public class Inscription extends HttpServlet {
 			// Voir avec le prof pour erreur : Impossible d'utiliser faire-suivre (forward) après que la réponse ait été envoyée
 			doGet(request, response);
 		}
+		
+		// TODO ouvrir la session avec l'utilisateur créé
+		
 		rd = request.getRequestDispatcher("/WEB-INF/Encheres/Encheres.jsp");
 		rd.forward(request, response);
 	}

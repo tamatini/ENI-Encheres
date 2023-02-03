@@ -55,12 +55,14 @@ TODO revoir le completion du champs email qui est reste vide
       </form>
       
       <c:if test="${! empty Liste_codes_erreurs}">
+      <div>
       	<p>Erreurs !</p>
-      	<ul>
+      
           <c:forEach var="codeErreur" items="${Liste_codes_erreurs}">
-      	    <li>${LecteurMessage.getMessageErreur(codeErreur)}</li>
+      	    <span class="erreurs">${LecteurMessage.getMessageErreur(codeErreur)}</span>
       	  </c:forEach>
-      	</ul>
+      	
+      </div>
       </c:if>
       
     </div>
