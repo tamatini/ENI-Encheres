@@ -180,7 +180,7 @@ public class UtilisateurBLL {
 			businessException.ajouterErreur(CodesResultatBLL.INSERT_USER_PSEUDO_ERROR);
 		}
 		if(!user.getPseudo().equals(nouveauPseudo)){
-			if (utilisateurDAO.SelectByPseudo(user.getPseudo()).getPseudo() != null) {
+			if (utilisateurDAO.SelectByPseudo(nouveauPseudo).getPseudo() != null) {
 				businessException.ajouterErreur(CodesResultatBLL.INSERT_USER_PSEUDO_OTHER);	
 			} else {
 				user.setPseudo(nouveauPseudo);
@@ -202,7 +202,7 @@ public class UtilisateurBLL {
 			businessException.ajouterErreur(CodesResultatBLL.INSERT_USER_EMAIL_ERROR);
 		}
 		if(!user.getEmail().equals(nouveauEmail)){
-			if (utilisateurDAO.selectByEmail(user.getEmail()).getEmail() != null) {
+			if (utilisateurDAO.selectByEmail(nouveauEmail).getEmail() != null) {
 				businessException.ajouterErreur(CodesResultatBLL.INSERT_USER_EMAIL_OTHER);
 			} else {
 				user.setEmail(nouveauEmail);
@@ -246,8 +246,10 @@ public class UtilisateurBLL {
 	}
 	
 	// Supprimer un utilisateur
-	
-	
+	public void supprimerMonCompte(int utilisateurId) throws BusinessException {
+		this.utilisateurDAO.delete(utilisateurId);
+	}
+
 	// Voir un utilisateur
 	public Utilisateur afficherProfil (int utilisateurId) {
 		return utilisateurDAO.selectById(utilisateurId);

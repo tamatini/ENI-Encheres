@@ -1,3 +1,6 @@
+// TODO quand toutes les données de l'uitilisateur temporaire sont ok, les tranferer dans le user. 
+
+
 package org.encheres.eni.servlets;
 
 import java.io.IOException;
@@ -26,6 +29,7 @@ public class ModifierProfil extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rq = request.getRequestDispatcher("/WEB-INF/Encheres/ModifierProfil.jsp");
+		request.setAttribute("titre", "Modifier mon profil");
 		rq.forward(request, response);
 		
 	}
@@ -35,7 +39,7 @@ public class ModifierProfil extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		UtilisateurBLL utilisateurBLL = new UtilisateurBLL(); // utiliser pour modifier utilisateur
+		UtilisateurBLL utilisateurBLL = new UtilisateurBLL();
 		HttpSession session = request.getSession(false);
 		Utilisateur user = null; 
 		String controle_motDePasse = null;
