@@ -24,8 +24,7 @@ public class Inscription extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		// TODO rediriger la modification de profil vers une nouvelle servlet (voir Charlène)
+		request.setAttribute("titre", "Inscription");
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Encheres/Inscription.jsp");
 		rd.forward(request, response);
 	}
@@ -35,6 +34,7 @@ public class Inscription extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+		RequestDispatcher rd;
 		UtilisateurBLL utilisateurBLL = new UtilisateurBLL();
 		Utilisateur nouvelUtilisateur = new Utilisateur();
 		String controle_motDePasse = null;
@@ -58,9 +58,10 @@ public class Inscription extends HttpServlet {
 			request.setAttribute("Liste_codes_erreurs", e.getListeCodesErreur());
 			request.setAttribute("donnees_formulaire", nouvelUtilisateur);
 			request.setAttribute("controle_motDePasse", controle_motDePasse);
+			// Voir avec le prof pour erreur : Impossible d'utiliser faire-suivre (forward) après que la réponse ait été envoyée
 			doGet(request, response);
 		}
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Encheres/Encheres.jsp");
+		rd = request.getRequestDispatcher("/WEB-INF/Encheres/Encheres.jsp");
 		rd.forward(request, response);
 	}
 }

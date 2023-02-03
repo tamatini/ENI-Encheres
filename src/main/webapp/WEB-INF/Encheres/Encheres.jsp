@@ -33,7 +33,7 @@
         </div>
         <div class="card_text_section">
           <div class="card_text_header">
-            <h3 class="card_text_title"><a href="#">PC Gamer</a></h3>
+            <h3 class="card_text_title"><a href="${pageContext.request.contextPath}/encheres/detailEnchere">PC Gamer</a></h3>
           </div>
           <div class="card_text_content">
             <ul>
@@ -52,7 +52,7 @@
         </div>
         <div class="card_text_section">
           <div class="card_text_header">
-            <h3 class="card_text_title"><a href="#">PC Gamer</a></h3>
+            <h3 class="card_text_title"><a href="${pageContext.request.contextPath}/encheres/detailEnchere">PC Gamer</a></h3>
           </div>
           <div class="card_text_content">
             <ul>
@@ -71,7 +71,7 @@
         </div>
         <div class="card_text_section">
           <div class="card_text_header">
-            <h3 class="card_text_title"><a href="#">PC Gamer</a></h3>
+            <h3 class="card_text_title"><a href="${pageContext.request.contextPath}/encheres/detailEnchere">PC Gamer</a></h3>
           </div>
           <div class="card_text_content">
             <ul>
@@ -90,7 +90,7 @@
         </div>
         <div class="card_text_section">
           <div class="card_text_header">
-            <h3 class="card_text_title"><a href="#">PC Gamer</a></h3>
+            <h3 class="card_text_title"><a href="${pageContext.request.contextPath}/encheres/detailEnchere">PC Gamer</a></h3>
           </div>
           <div class="card_text_content">
             <ul>
@@ -109,7 +109,7 @@
         </div>
         <div class="card_text_section">
           <div class="card_text_header">
-            <h3 class="card_text_title"><a href="#">PC Gamer</a></h3>
+            <h3 class="card_text_title"><a href="${pageContext.request.contextPath}/encheres/detailEnchere">PC Gamer</a></h3>
           </div>
           <div class="card_text_content">
             <ul>
@@ -128,7 +128,7 @@
         </div>
         <div class="card_text_section">
           <div class="card_text_header">
-            <h3 class="card_text_title"><a href="#">PC Gamer</a></h3>
+            <h3 class="card_text_title"><a href="${pageContext.request.contextPath}/encheres/detailEnchere">PC Gamer</a></h3>
           </div>
           <div class="card_text_content">
             <ul>

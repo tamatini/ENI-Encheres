@@ -5,13 +5,13 @@
       <div>
       <c:choose>
       	<c:when test="${ sessionScope.user != null }">
-     		<span>Bienvenu <a href="encheres/profil?id=${ user.utilisateurId }">${ user.nom }</a></span>
+     		<span>Bienvenue <a href="encheres/profil?id=${ user.utilisateurId }">${ user.nom }</a></span>
 	        <a class="nav_link" href="#">Enchères</a>
 	        <a class="nav_link" href="#">Vendre un article</a>
 	        <a class="nav_link" href="${ pageContext.request.contextPath }/SeDeconnecter">Déconnexion</a>
       	</c:when>
       	<c:when test="${ sessionScope.user == null }">
-        	<a class="nav_link" href="/CréerCompte.html">S'inscrire</a>
+        	<a class="nav_link" href="${pageContext.request.contextPath}/encheres/inscription">S'inscrire</a>
         	<a class="nav_link" href="${ pageContext.request.contextPath }/seconnecter ">Se Connecter</a>      	
       	</c:when>
       </c:choose>
