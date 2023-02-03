@@ -29,6 +29,7 @@ public class DetailEnchere extends HttpServlet {
 		// TODO récupérer l'article depuis Encheres.jsp
 		Article articleConsulte = new Article("PC Gamer", "Un PC le voilà qu'il est beau et propre (DD non fournit, cables en options)", LocalDate.of(2022, Month.SEPTEMBER, 1),
 				LocalDate.of(2023, Month.MARCH, 5), 100, 250, 5, 1);
+		String URLimage = "../Public/Images/pc.jpg";
 		System.out.println(articleConsulte);
 		
 		// TODO récupérer le nom du vendeur à l'aide du vendeurId de l'article
@@ -50,6 +51,7 @@ public class DetailEnchere extends HttpServlet {
 		
 		request.setAttribute("titre", articleConsulte.getNomArticle());
 		request.setAttribute("article", articleConsulte);
+		request.setAttribute("image", URLimage);
 		request.setAttribute("retrait", retrait);
 		request.setAttribute("categorie", categorie);
 		request.setAttribute("nomGagnant", nomGagnant);
