@@ -416,6 +416,11 @@ footer div a {
   text-align: justify;
 }
 
+.auction_no_bet {
+  padding: 2em 0em;
+  font-style: italic;
+}
+
 .form_input_light {
   border-radius: 4px;
   background-color: buttonhighlight;
