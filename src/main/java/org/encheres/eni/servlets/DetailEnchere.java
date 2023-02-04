@@ -27,10 +27,10 @@ public class DetailEnchere extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO récupérer l'article depuis Encheres.jsp
-		Article articleConsulte = new Article("PC Gamer", "Un PC le voilà qu'il est beau et propre (DD non fournit, cables en options)", LocalDate.of(2022, Month.SEPTEMBER, 1),
+		Article articleConsulte = new Article("PC Gamer", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", LocalDate.of(2022, Month.SEPTEMBER, 1),
 				LocalDate.of(2023, Month.MARCH, 5), 100, 250, 5, 1);
 		String URLimage = "../Public/Images/pc.jpg";
-		System.out.println(articleConsulte);
+//		System.out.println(articleConsulte);
 		
 		// TODO récupérer le nom du vendeur à l'aide du vendeurId de l'article
 		String nomVendeur = "De Montmirail";
