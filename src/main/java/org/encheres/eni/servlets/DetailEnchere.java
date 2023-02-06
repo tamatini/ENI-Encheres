@@ -66,7 +66,7 @@ public class DetailEnchere extends HttpServlet {
 			int miseMax = 250;
 			
 			// TODO récupérer le point retrait correspondant à l'article
-			Retrait retrait = new Retrait("15478 rue très loin", "75000", "Marseille");
+			Retrait retrait = new Retrait("15478 rue très loin", "75000", "Marseille", 1);
 			
 			/* Modification du format de la date */
 			Date date_fin_enchere = localDateToDate(articleConsulte.getDateFinEncheres());

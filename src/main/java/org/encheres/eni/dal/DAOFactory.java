@@ -2,9 +2,11 @@ package org.encheres.eni.dal;
 
 import org.encheres.eni.bo.Article;
 import org.encheres.eni.bo.Categorie;
+import org.encheres.eni.bo.Retrait;
 import org.encheres.eni.bo.Utilisateur;
 import org.encheres.eni.dal.jdbc.ArticleDAOJdbcImpl;
 import org.encheres.eni.dal.jdbc.CategorieDAOJdbcImpl;
+import org.encheres.eni.dal.jdbc.RetraitDAOJdbcImpl;
 import org.encheres.eni.dal.jdbc.UtilisateurDAOJdbcImpl;
 
 
@@ -13,6 +15,7 @@ public abstract class DAOFactory {
 	private static DAO<Utilisateur> utilisateurDAO;
 	private static DAO<Article> articleDAO;
 	private static DAO<Categorie> categorieDAO;
+	private static DAO<Retrait> retraitDAO;
 
 	public static DAO<Utilisateur> getUtilisateurDAO() {
 		if (utilisateurDAO == null) {
@@ -42,5 +45,11 @@ public abstract class DAOFactory {
 		return categorieDAO;
 	}
 	
+	public static DAO<Retrait> getRetraitDAO() {
+		if (retraitDAO == null) {
+			retraitDAO = new RetraitDAOJdbcImpl();
+		}
+		return retraitDAO;
+	}
 	
 }

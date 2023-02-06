@@ -31,7 +31,7 @@ public class ArticleDAOJdbcImpl implements DAO<Article>{
 			ps.executeUpdate();
 			ResultSet rs = ps.getGeneratedKeys();
 			if (rs.next()) {
-				article.setArticleId(1);
+				article.setArticleId(rs.getInt(1));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

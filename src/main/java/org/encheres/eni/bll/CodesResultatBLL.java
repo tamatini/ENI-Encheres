@@ -28,4 +28,24 @@ public abstract class CodesResultatBLL {
 	public static final int REGLE_ARTICLE_DESCRIPTION_ERREUR=20032;
 	public static final int SELECT_BY_ID_ARTICLE_NULL=20040;
 	
+	public static final int NOM_ARTICLE_OBLIGATOIRE = 20033;
+	public static final int DESCRIPTION_ARTICLE_OBLIGATOIRE = 20034;
+	public static final int CATEGORIE_ARTICLE_OBLIGATOIRE = 20035;
+	public static final int PRIX_INITIAL_OBLIGATOIRE = 20036;
+	public static final int DATE_DEBUT_ENCHERE_OBLIGATOIRE = 20037;
+	public static final int DATE_FIN_ENCHERE_OBLIGATOIRE = 20038;
+	public static final int VENDEUR_CONNEXION_OBLIGATOIRE = 20039;
+	
+	/* Erreur BLL retrait */
+	// Rue
+	public static final int RUE_ARTICLE_OBLIGATOIRE = 20040;
+	public static final int RUE_ARTICLE_LONGUEUR = 20041;
+	
+	// Ville
+	public static final int VILLE_ARTICLE_OBLIGATOIRE = 20042;
+	public static final int VILLE_ARTICLE_LONGUEUR = 20043;
+	
+	// CodePostal
+	public static final int CODE_POSTAL_OBLIGATOIRE = 20044;
+	public static final int CODE_POSTAL_LONGUEUR = 20045;
 }
