@@ -250,7 +250,7 @@ public class UtilisateurBLL {
 	}
 
 	// Voir un utilisateur
-	public Utilisateur afficherProfil (int utilisateurId) {
+	public Utilisateur afficherProfil (int utilisateurId) throws BusinessException {
 		return utilisateurDAO.selectById(utilisateurId);
 	}
 
