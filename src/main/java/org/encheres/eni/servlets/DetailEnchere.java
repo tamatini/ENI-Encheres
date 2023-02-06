@@ -14,7 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.encheres.eni.BusinessException;
+import org.encheres.eni.bll.CategorieBLL;
 import org.encheres.eni.bll.EncheresBLL;
+import org.encheres.eni.bll.UtilisateurBLL;
 import org.encheres.eni.bo.Article;
 import org.encheres.eni.bo.Retrait;
 import org.encheres.eni.bo.Utilisateur;
@@ -55,11 +57,14 @@ public class DetailEnchere extends HttpServlet {
 			// TODO ajouter l'url à l'article
 			String URLimage = "../Public/Images/pc.jpg";
 			
-			// TODO récupérer le nom du vendeur à l'aide du vendeurId de l'article
-			String nomVendeur = "De Montmirail";
+			// Récupération du pseudo du vendeur
+			UtilisateurBLL vendeur = new UtilisateurBLL();
+			String nomVendeur = vendeur.afficherProfil(articleConsulte.getVendeurId()).getPseudo();
 			
-			// TODO récupérer le nom de la catégorie en fonction de la categoryId de l'article
-			String categorie = "Informatique";
+			// Récupération du libellé de la catégorie
+			CategorieBLL categorieArticle = new CategorieBLL();
+			String categorie = categorieArticle.afficherCategorie(articleConsulte.getCategoryId()).getLibelle();
+			
 			
 			// TODO récupérer le montant de la meilleur offre et le nom de l'utilisateur correspondant
 			String nomGagnant = "Godefroy";

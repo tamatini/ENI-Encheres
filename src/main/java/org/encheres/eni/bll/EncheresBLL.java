@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import org.encheres.eni.BusinessException;
 import org.encheres.eni.bo.Article;
+import org.encheres.eni.bo.Enchere;
 import org.encheres.eni.bo.Retrait;
 import org.encheres.eni.dal.DAO;
 import org.encheres.eni.dal.DAOFactory;
@@ -11,11 +12,12 @@ import org.encheres.eni.dal.DAOFactory;
 public class EncheresBLL {
 	
 	private DAO<Article> articleDAO;
-	private DAO<Retrait> retraiDao;
+	private DAO<Retrait> retraitDAO;
+	private DAO<Enchere> enchereDAO;
 
 	public EncheresBLL() {
 		this.articleDAO = DAOFactory.getArticleDAO();
-		this.retraiDao = DAOFactory.getRetraitDAO();
+		this.retraitDAO = DAOFactory.getRetraitDAO();
 	}
 	
 	/**
@@ -57,7 +59,7 @@ public class EncheresBLL {
 			article = new Article(nomArticle, description, dateDebut, dateFin, prix, prix, vendeur, categorie);
 			this.articleDAO.insert(article);
 			retrait = new Retrait(rue, ville, codePostal, article.getArticleId());
-			this.retraiDao.insert(retrait);
+			this.retraitDAO.insert(retrait);
 			
 		} else {
 			throw businessException;
@@ -261,9 +263,38 @@ public class EncheresBLL {
 	 */
 	public Article afficherArticle(int articleId) throws BusinessException {
 		BusinessException businessException = new BusinessException();
-		if (articleId == 0) {
+		if (articleDAO.selectById(articleId) == null) {
 			businessException.ajouterErreur(CodesResultatBLL.SELECT_BY_ID_ARTICLE_NULL);
 		}
 		return articleDAO.selectById(articleId);
 	}
+	
+	/**
+	 * Méthode pour afficher une enchère
+	 * @param articleId
+	 * @return article
+	 */
+	public Enchere afficherEnchere(int articleId) throws BusinessException {
+		BusinessException businessException = new BusinessException();
+		Enchere enchere = new Enchere();
+		Article article = new Article();
+		article = articleDAO.selectById(articleId);
+		
+		if (article == null) {
+			businessException.ajouterErreur(CodesResultatBLL.SELECT_BY_ID_ARTICLE_NULL);
+		}
+		
+		if(businessException.hasErreurs()) {
+			throw businessException;
+		} else if (enchereDAO.selectById(articleId) == null){
+			enchere.setArticleId(articleId);
+			enchere.setMontant_enchere(article.getPrixInitial());
+			enchere.setVendeurId(article.getVendeurId());
+		} else {
+			enchere = enchereDAO.selectById(articleId);
+		}
+		return enchere;
+	}
+	
+	
 }

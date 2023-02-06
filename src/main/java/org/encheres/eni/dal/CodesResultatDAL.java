@@ -18,4 +18,5 @@ public abstract class CodesResultatDAL {
 	
 	// Echec Catégories
 	public static final int SELECT_ALL_CATEGORIES_ECHEC = 10030;
+	public static final int SELECT_CATEGORIE_ECHEC = 10031;
 }

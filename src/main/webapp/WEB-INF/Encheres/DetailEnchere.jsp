@@ -49,9 +49,8 @@
           <td class="auction_table_titles">Vendeur :</td>
           <td>${nomVendeur}</td>
         </tr>
-        
         <c:choose>
-          <c:when test="${user.credit > miseMax}">
+          <c:when test="${user.utilisateurId != article.vendeurId && user.credit > miseMax}">
     	    <tr>
     	      <td class="auction_table_titles">Ma proposition :</td>
     	      <td>
@@ -62,11 +61,12 @@
     	      </td>
     	    </tr>    
           </c:when>
-          <c:otherwise>
+          <c:when test="${user.utilisateurId != article.vendeurId && user.credit <= miseMax}">
             <tr>
               <td class="auction_no_bet" colspan="2">Vous n'avez pas assez de crédits pour enchérir sur cette vente</td>
             </tr>
-          </c:otherwise>
+          </c:when>
+          <c:otherwise></c:otherwise>
         </c:choose>
         
       </table>
