@@ -2,7 +2,6 @@ package org.encheres.eni.servlets;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.ZoneId;
 import java.util.Date;
 
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpSession;
 
 import org.encheres.eni.BusinessException;
 import org.encheres.eni.bll.EncheresBLL;
-import org.encheres.eni.bll.UtilisateurBLL;
 import org.encheres.eni.bo.Article;
 import org.encheres.eni.bo.Retrait;
 import org.encheres.eni.bo.Utilisateur;
@@ -34,27 +32,26 @@ public class DetailEnchere extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		Utilisateur user = (Utilisateur) session.getAttribute("user");
+				
+		// TODO rediriger vers la page de modification de la vente si l'utilisateur connecté est le détenteur de l'article
+		// et si la date de début d'enchère n'est pas passée
 		
+		// TODO récupérer directement l'enchère
+		EncheresBLL encheresBLL = new EncheresBLL();
 		
-		// Gestion si pas de session utilisateur
-		if (user == null) {
-			NullPointerException npe = new NullPointerException("Vous devez être connecté pour afficher cette page");
-			System.out.println(npe.getMessage());
-			throw npe;
-		} else {
-			// TODO rediriger vers l'accueil si l'utilisateur n'est pas connecté
+		try {
 			
-			// TODO rediriger vers la page de modification de la vente si l'utilisateur connecté est le détenteur de l'article
-			// et si la date de début d'enchère n'est pas passée
-			
-			// TODO récupérer l'article depuis Encheres.jsp
-			EncheresBLL encheresBLL = new EncheresBLL();
-			
-			try {
-				int articleId = Integer.parseInt(request.getParameter("id"));
-				Article articleConsulte = encheresBLL.afficherArticle(articleId);
-				System.out.println(articleConsulte);
-
+			// Gestion si pas d'utilisateur connecté
+			if (user == null) {
+				NullPointerException npe = new NullPointerException("Vous devez être connecté pour afficher cette page");
+				System.out.println(npe.getMessage());
+				throw npe;
+			}
+			 
+			int articleId = Integer.parseInt(request.getParameter("id")); // Peut lever une NumberFormatException redirigée vers 404
+			Article articleConsulte = encheresBLL.afficherArticle(articleId);
+			System.out.println(articleConsulte);
+	
 			// TODO ajouter l'url à l'article
 			String URLimage = "../Public/Images/pc.jpg";
 			
@@ -86,14 +83,13 @@ public class DetailEnchere extends HttpServlet {
 			
 			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Encheres/DetailEnchere.jsp");
 			rd.forward(request, response);
-			
-			} catch (NumberFormatException | NullPointerException e) {
-				// TODO créer une page 404 qui affiche la liste des erreurs
-				response.sendError(HttpServletResponse.SC_NOT_FOUND);
-				e.printStackTrace();
-			} catch (BusinessException be) {
-				be.printStackTrace();
-			}
+		
+		} catch (NumberFormatException | NullPointerException e) {
+			// TODO créer une page 404 qui affiche la liste des erreurs
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+			e.printStackTrace();
+		} catch (BusinessException be) {
+			be.printStackTrace();
 		}
 	}
 
