@@ -254,6 +254,13 @@ public class UtilisateurBLL {
 		return utilisateurDAO.selectById(utilisateurId);
 	}
 
+	/**
+	 * La méthode controlle le pseudo et le mot de passe saisie
+	 * @param pseudo le pseudo
+	 * @param motDePasse le mot de passe
+	 * @return l'utilisateur
+	 * @throws BusinessException
+	 */
 	public Utilisateur seConnecter(String pseudo, String motDePasse) throws BusinessException {
 		BusinessException businessException = new BusinessException();
 		Utilisateur utilisateur;
@@ -267,6 +274,12 @@ public class UtilisateurBLL {
 		return utilisateur;
 	}
 	
+	/**
+	 * Vérifie le nom d'utilisateur saisi est un pseudo ou un mail
+	 * @param pseudo
+	 * @return
+	 * @throws BusinessException
+	 */
 	private Utilisateur selectionnerUtilisateur(String pseudo) throws BusinessException {
 		Utilisateur utilisateur;
 		if (pseudo.contains("@")) {
@@ -277,12 +290,23 @@ public class UtilisateurBLL {
 		return utilisateur;
 	}
 	
+	/**
+	 * Vérifie si l'utilisateur saisi existe bien dans la base de données
+	 * @param utilisateur l'utilisateur
+	 * @param businessException
+	 */
 	private void validerUtilisateur(Utilisateur utilisateur, BusinessException businessException) {
 		if (utilisateur.getUtilisateurId() == 0) {
 			businessException.ajouterErreur(CodesResultatBLL.REGLE_PSEUDO_ERREUR);
 		}
 	}
 	
+	/**
+	 * Vérifie si le mot de passe saisi est bien celui associé à l'utilisateur
+	 * @param motDePasseSaisie
+	 * @param motDePasseUtilisateur
+	 * @param businessException
+	 */
 	private void validerMotDePasse(String motDePasseSaisie, String motDePasseUtilisateur, BusinessException businessException) {
 		if (!motDePasseSaisie.equals(motDePasseUtilisateur)) {
 			businessException.ajouterErreur(CodesResultatBLL.REGLE_MOT_DE_PASSE_ERREUR);

@@ -15,20 +15,35 @@ public class EncheresBLL {
 		this.articleDAO = DAOFactory.getArticleDAO();
 	}
 	
-	// Ajouter un article
-	public void creerArticle(String nomArticle, String description, LocalDate dateDebut, LocalDate dateFin, int prixInitial, int prixVente, int vendeurId, int categoryId ) throws BusinessException {
+	/**
+	 * Ajoute un nouvel article associé à un utilisateur et une catégorie
+	 * @param nomArticle le nom de la vente
+	 * @param description la description
+	 * @param dateDebut la date de début
+	 * @param dateFin la date de fin
+	 * @param prixInitial le prix initial
+	 * @param prixVente le prix de vente
+	 * @param vendeurId l'id du vendeur
+	 * @param categoryId l'id de la catégorie
+	 * @return 
+	 * @throws BusinessException
+	 */
+	public Article creerArticle(String nomArticle, String description, LocalDate dateDebut, LocalDate dateFin, int prixInitial, int prixVente, int vendeurId, int categoryId ) throws BusinessException {
 		BusinessException businessException = new BusinessException();
+		Article article;
 		
 		this.validerDateEnchere(dateDebut, dateFin, businessException);
 		this.validerPrix(prixInitial, businessException);
 		this.validerDescription(description, businessException);
 		
 		if (!businessException.hasErreurs()) {
-			Article article = new Article();
+			article = new Article(nomArticle, description, dateDebut, dateDebut, prixInitial, prixVente, vendeurId, categoryId);
 			this.articleDAO.insert(article);			
 		} else {
 			throw businessException;
 		}
+		
+		return article;
 	}
 	
 	private void validerDateEnchere(LocalDate dateDebut, LocalDate dateFin, BusinessException businessException) {

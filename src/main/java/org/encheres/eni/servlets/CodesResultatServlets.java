@@ -27,4 +27,5 @@ public abstract class CodesResultatServlets {
 	public static final Integer DATE_DEBUT_ENCHERE_OBLIGATOIRE = 30014;
 	public static final Integer DATE_FIN_ENCHERE_OBLIGATOIRE = 30015;
 	public static final Integer VENDEUR_CONNEXION_OBLIGATOIRE = 30016;
+	public static final Integer RUE_ARTICLE_OBLIGATOIRE = 30017;
 }

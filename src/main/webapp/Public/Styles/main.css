@@ -455,3 +455,68 @@ footer div a {
   box-shadow: 1px 1px 4px 2px #004d00;
   transition-duration: .4s;
 }
+
+.article_form {
+	display: flex;
+	flex-direction: row;
+}
+
+.article_form .article_form_img {
+	width: 500px;
+	height: 100%;
+	overflow: hidden;
+}
+
+.article_form_fieldset {
+	padding: 1rem;
+	border-radius: 4px;
+	margin-bottom: 1rem;
+	margin-top: 1rem;
+}
+
+.article_form input {
+	padding-left: .5rem;	
+}
+
+.article_form_fieldset label {
+	margin-left: .5rem;
+}
+
+.article_form_fieldset legend {
+	text-align: center;
+	font-weight: bold;
+}
+
+.article_form_fieldset input {
+	padding-left: .5rem;
+}
+
+.article_form_fieldset select {
+	padding-left: .5rem;
+}
+
+.article_form_input_section {
+	width: 100%;
+}
+
+.article_form_img>img {
+	width: 100%;
+	height: 300px;
+	object-fit: cover;
+}
+
+.article_form_buttons {
+	width: 100%;
+	text-align: right;
+}
+
+.dark_bg {
+	background: linear-gradient(180deg,#011f39 0%,#001838 100%);
+}
+
+.article_new_form {
+	background: white;
+	padding: 5rem 3rem 2rem;
+	border-radius: 8px;
+	margin-top: 4rem;
+}
