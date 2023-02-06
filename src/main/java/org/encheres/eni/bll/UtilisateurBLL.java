@@ -255,7 +255,7 @@ public class UtilisateurBLL {
 	}
 
 	/**
-	 * La méthode controlle le pseudo et le mot de passe saisie
+	 * La méthode controle le pseudo et le mot de passe saisie
 	 * @param pseudo le pseudo
 	 * @param motDePasse le mot de passe
 	 * @return l'utilisateur

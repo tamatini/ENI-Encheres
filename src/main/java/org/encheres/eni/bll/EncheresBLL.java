@@ -254,4 +254,16 @@ public class EncheresBLL {
 		}
 	}
 	
+	/**
+	 * Méthode pour afficher un article
+	 * @param articleId
+	 * @return article
+	 */
+	public Article afficherArticle(int articleId) throws BusinessException {
+		BusinessException businessException = new BusinessException();
+		if (articleId == 0) {
+			businessException.ajouterErreur(CodesResultatBLL.SELECT_BY_ID_ARTICLE_NULL);
+		}
+		return articleDAO.selectById(articleId);
+	}
 }

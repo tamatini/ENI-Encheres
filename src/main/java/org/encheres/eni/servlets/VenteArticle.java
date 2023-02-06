@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.tomcat.jni.Local;
 import org.encheres.eni.BusinessException;
 import org.encheres.eni.bll.CategorieBLL;
 import org.encheres.eni.bll.EncheresBLL;
@@ -61,27 +62,22 @@ public class VenteArticle extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Integer> listeCodesErreurs = new ArrayList<>();
-		Article article;
-		String nomArticle, description, rue;
-		int categorieId, prixInitial, prixVente, vendeurId;
-		LocalDate dateDebutEnchere, dateFinEnchere;
+		Utilisateur utilisateur = (Utilisateur) request.getSession().getAttribute("user");
+		String nomArticle, description, rue, ville, codePostal, categorieId, prixInitial;
+		int vendeurId;
+		LocalDate dateDebutEnchere, dateFinEnchere;	
 		
+		nomArticle = request.getParameter("nomArticle");
+		description = request.getParameter("description");
+		dateDebutEnchere = LocalDate.parse(request.getParameter("dateDebut"));
+		dateFinEnchere = LocalDate.parse(request.getParameter("dateFin"));
+		prixInitial = request.getParameter("prixInitial");
+		categorieId = request.getParameter("categorieId");
+		vendeurId = utilisateur.getUtilisateurId();
+		rue = request.getParameter("rue");
+		ville = request.getParameter("ville");
+		codePostal = request.getParameter("codePostal");
 		
-		nomArticle = this.nomArticle(request, listeCodesErreurs);
-		description = this.description(request, listeCodesErreurs);
-		dateDebutEnchere = this.dateDebutEnchere(request, listeCodesErreurs);
-		dateFinEnchere = this.dateFinEnchere(request, listeCodesErreurs);
-		prixInitial = this.prixInitial(request, listeCodesErreurs);
-		prixVente = prixInitial;
-		categorieId = this.categorieId(request, listeCodesErreurs);
-		vendeurId = this.vendeurId(request, listeCodesErreurs);
-		rue = this.rue(request, listeCodesErreurs);
-		
-	
-		/* En attente du push de la bo retrait */
-		//String codePostal = (String)request.getAttribute("codePostal");
-		//String ville = (String)request.getAttribute("ville");
-		//article = new Article(nomArticle, description, dateDebutEnchere, dateFinEnchere, 0, prixInitial, ven);
 		
 		if (listeCodesErreurs.size() > 0) {
 			request.setAttribute("listeCodesErreurs", listeCodesErreurs);
@@ -89,7 +85,9 @@ public class VenteArticle extends HttpServlet {
 			EncheresBLL encheresBLL = new EncheresBLL();
 			try {
 				listeCategories(request, listeCodesErreurs);
-				article = encheresBLL.creerArticle(nomArticle, description, dateDebutEnchere, dateFinEnchere, prixInitial, prixVente, vendeurId, categorieId);
+				
+				encheresBLL.creerArticle(nomArticle, description, dateDebutEnchere, dateFinEnchere, prixInitial, 
+						vendeurId, categorieId, rue, ville, codePostal);
 				
 			} catch (BusinessException e) {
 				e.printStackTrace();
@@ -109,152 +107,4 @@ public class VenteArticle extends HttpServlet {
 			request.setAttribute("listeCodesErreurs", listeCodesErreurs);
 		}		
 	}
-	
-	/**
-	 * Vérifie si le champ nomArticle n'est pas vide
-	 * @param request la requête
-	 * @param listeCodesErreurs la liste des codes des erreurs
-	 * @return le nom de l'article
-	 */
-	private String nomArticle(HttpServletRequest request, List<Integer> listeCodesErreurs) {
-		String nomArticle;
-		nomArticle = request.getParameter("nomArticle");
-		if (nomArticle == null || nomArticle.trim().equals("")) {
-			listeCodesErreurs.add(CodesResultatServlets.NOM_ARTICLE_OBLIGATOIRE);
-		}
-		return nomArticle;
-	}
-	
-	/**
-	 * Vérifie si le champ description n'est pas vide
-	 * @param request la requête
-	 * @param listeCodesErreurs la liste des codes des erreurs
-	 * @return la description
-	 */
-	private String description(HttpServletRequest request, List<Integer> listeCodesErreurs) {
-		String description;
-		description = request.getParameter("description");
-		if (description == null || description.trim().equals("") ) {
-			listeCodesErreurs.add(CodesResultatServlets.DESCRIPTION_ARTICLE_OBLIGATOIRE);
-		}
-		return description;
-	}
-	
-	/**
-	 * Vérifie si le champ rue n'est pas vide
-	 * @param request la requête
-	 * @param listeCodesErreurs la liste des codes des erreurs
-	 * @return la rue
-	 */
-	private String rue(HttpServletRequest request, List<Integer> listeCodesErreurs) {
-		String rue;
-		rue = request.getParameter("rue");
-		if (rue == null || rue.trim().equals("")) {
-			listeCodesErreurs.add(CodesResultatServlets.RUE_ARTICLE_OBLIGATOIRE);
-		}
-		return rue;
-	}
-	
-	/**
-	 * Vérifie si le champ catégorie n'est pas vide
-	 * @param request la requête
-	 * @param listeCodesErreurs la liste des codes des erreurs
-	 * @return la catégorie
-	 */
-	private int categorieId(HttpServletRequest request, List<Integer> listeCodesErreurs) {
-		int categorieId = 0;
-		try {
-			if (request.getParameter("categorieId") != null) {
-				categorieId = Integer.parseInt(request.getParameter("categorieId"));
-			}
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-			listeCodesErreurs.add(CodesResultatServlets.CATEGORIE_ARTICLE_OBLIGATOIRE);
-		}
-		return categorieId;
-	}
-	
-	/**
-	 * Vérifie si le champ prixInitial n'est pas vide
-	 * @param request la requête
-	 * @param listeCodesErreurs la liste des codes des erreurs
-	 * @return le prix de Initial
-	 */
-	private int prixInitial(HttpServletRequest request, List<Integer> listeCodesErreurs) {
-		int prixInitial = 0;
-		try {
-			if (request.getParameter("prixInitial") != null || Integer.parseInt(request.getParameter("prixInitial")) != 0) {
-				prixInitial = Integer.parseInt(request.getParameter("prixInitial"));
-			}
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-			listeCodesErreurs.add(CodesResultatServlets.PRIX_INITIAL_OBLIGATOIRE);
-		}
-		return prixInitial;
-	}
-	
-	/**
-	 * Vérifie si le champ dateDebut n'est pas vide
-	 * @param request la requête
-	 * @param listeCodesErreurs la liste des codes des erreurs
-	 * @return la date de début de l'enchère
-	 */
-	private LocalDate dateDebutEnchere (HttpServletRequest request, List<Integer> listeCodesErreurs) {
-		LocalDate dateDebutEnchere = LocalDate.now();
-		try {
-			if (request.getParameter("dateDebut") != null) {
-				dateDebutEnchere = LocalDate.parse(request.getParameter("dateDebut"));
-			}
-		} catch (DateTimeException e) {
-			e.printStackTrace();
-			listeCodesErreurs.add(CodesResultatServlets.DATE_DEBUT_ENCHERE_OBLIGATOIRE);
-			
-		}
-		return dateDebutEnchere;
-	}
-	
-	/**
-	 * Vérifie si le champ dateFin n'est pas vide
-	 * @param request la requète
-	 * @param listeCodesErreurs la liste des codes des erreurs
-	 * @return la date de fin de l'enchère
-	 */
-	private LocalDate dateFinEnchere (HttpServletRequest request, List<Integer> listeCodesErreurs) {
-		LocalDate dateFinEnchere = LocalDate.now();
-		try {
-			if (request.getParameter("dateFin") != null) {
-				dateFinEnchere = LocalDate.parse(request.getParameter("dateDebut"));
-			}
-		} catch (DateTimeException e) {
-			e.printStackTrace();
-			listeCodesErreurs.add(CodesResultatServlets.DATE_FIN_ENCHERE_OBLIGATOIRE);
-			
-		}
-		return dateFinEnchere;
-	}
-	
-	/**
-	 * Récupère l'id de l'utilisateur connecté
-	 * @param request la requête
-	 * @param listeCodesErreurs la liste des codes des erreurs
-	 * @return l'id du vendeur
-	 */
-	private int vendeurId(HttpServletRequest request, List<Integer> listeCodesErreurs) {
-		int vendeurId = 0;
-		Utilisateur utilisateur;
-		HttpSession session = request.getSession(false);
-		try {
-			if (session != null) {
-				utilisateur = (Utilisateur)session.getAttribute("user");
-				System.out.println(utilisateur.getUtilisateurId());
-				vendeurId = utilisateur.getUtilisateurId();
-			}
-			
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-			listeCodesErreurs.add(CodesResultatServlets.VENDEUR_CONNEXION_OBLIGATOIRE);
-		}
-		return vendeurId;
-	}
-
 }

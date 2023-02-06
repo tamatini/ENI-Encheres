@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.encheres.eni.BusinessException;
 import org.encheres.eni.bll.UtilisateurBLL;
@@ -54,17 +55,14 @@ public class Inscription extends HttpServlet {
 			System.out.println(nouvelUtilisateur.toString());
 			utilisateurBLL.creerUtilisateur(nouvelUtilisateur, controle_motDePasse);
 			
+			request.getSession().setAttribute("user", nouvelUtilisateur);
+			response.sendRedirect(request.getContextPath()+"/encheres");
+			
 		} catch (BusinessException e) {
 			request.setAttribute("Liste_codes_erreurs", e.getListeCodesErreur());
 			request.setAttribute("donnees_formulaire", nouvelUtilisateur);
 			request.setAttribute("controle_motDePasse", controle_motDePasse);
-			// Voir avec le prof pour erreur : Impossible d'utiliser faire-suivre (forward) après que la réponse ait été envoyée
 			doGet(request, response);
 		}
-		
-		// TODO ouvrir la session avec l'utilisateur créé
-		
-		rd = request.getRequestDispatcher("/WEB-INF/Encheres/Encheres.jsp");
-		rd.forward(request, response);
 	}
 }

@@ -9,6 +9,7 @@ public class Retrait {
 	private String rue;
 	private String codePostal;
 	private String ville;
+	private int articleId;
 	
 	/**
 	 * Constructeur sans paramètres
@@ -22,10 +23,11 @@ public class Retrait {
 	 * @param codePostal
 	 * @param ville
 	 */
-	public Retrait(String rue, String codePostal, String ville) {
+	public Retrait(String rue, String codePostal, String ville, int articleId) {
 		this.rue = rue;
 		this.codePostal = codePostal;
 		this.ville = ville;
+		this.articleId = articleId;
 	}
 
 	public String getrue() {
@@ -50,6 +52,14 @@ public class Retrait {
 
 	public void setville(String ville) {
 		this.ville = ville;
+	}
+
+	public int getArticleId() {
+		return articleId;
+	}
+
+	public void setArticleId(int articleId) {
+		this.articleId = articleId;
 	}
 
 	@Override

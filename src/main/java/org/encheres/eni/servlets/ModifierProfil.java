@@ -62,14 +62,12 @@ public class ModifierProfil extends HttpServlet {
 				
 				utilisateurBLL.modifierUtilisateur(user, controle_motDePasse, nouveauPseudo, nouveauEmail);
 				
+				response.sendRedirect(request.getContextPath()+"/encheres");
+				
 			} catch (BusinessException e) {
 				request.setAttribute("Liste_codes_erreurs", e.getListeCodesErreur());
 				doGet(request, response);
 			}
 		}
-		
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Encheres/Encheres.jsp");
-		rd.forward(request, response);
 	}
-	
 }
