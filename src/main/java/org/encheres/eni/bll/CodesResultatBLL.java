@@ -26,5 +26,6 @@ public abstract class CodesResultatBLL {
 	public static final int REGLE_ARTICLE_DATE_ERREUR=20030;
 	public static final int REGLE_ARTICLE_PRIX_ERREUR=20031;
 	public static final int REGLE_ARTICLE_DESCRIPTION_ERREUR=20032;
+	public static final int SELECT_BY_ID_ARTICLE_NULL=20040;
 	
 }

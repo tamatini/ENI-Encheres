@@ -12,7 +12,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.encheres.eni.BusinessException;
+import org.encheres.eni.bll.EncheresBLL;
+import org.encheres.eni.bll.UtilisateurBLL;
 import org.encheres.eni.bo.Article;
 import org.encheres.eni.bo.Retrait;
 import org.encheres.eni.bo.Utilisateur;
@@ -28,63 +32,93 @@ public class DetailEnchere extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO rediriger vers l'accueil si l'utilisateur n'est pas connecté
+		HttpSession session = request.getSession();
+		Utilisateur user = (Utilisateur) session.getAttribute("user");
 		
-		// TODO rediriger vers la page de modification de la vente si l'utilisateur connecté est le détenteur de l'article
-		// et si la date de début d'enchère n'est pas passée
 		
-		// TODO récupérer l'article depuis Encheres.jsp
-		Article articleConsulte = new Article("PC Gamer", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do"
-				+ "eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation"
-				+ "ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate"
-				+ "velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in"
-				+ "culpa qui officia deserunt mollit anim id est laborum.", LocalDate.of(2022, Month.SEPTEMBER, 1),
-				LocalDate.of(2023, Month.MARCH, 5), 100, 250, 5, 1);
-		String URLimage = "../Public/Images/pc.jpg";
-//		System.out.println(articleConsulte);
-		
-		// TODO récupérer le nom du vendeur à l'aide du vendeurId de l'article
-		String nomVendeur = "De Montmirail";
-		
-		// TODO récupérer le nom de la catégorie en fonction de la categoryId de l'article
-		String categorie = "Informatique";
-		
-		// TODO récupérer le montant de la meilleur offre et le nom de l'utilisateur correspondant
-		String nomGagnant = "Godefroy";
-		int miseMax = 250;
-		
-		// TODO récupérer le point retrait correspondant à l'article
-		Retrait retrait = new Retrait("15478 rue très loin", "75000", "Marseille");
-		
-		// Pour tester le fonctionnement : création du user
-		Utilisateur user = new Utilisateur(101, "toto", "TANK", "Totor", "toto@gmail.com", null, "chemin du chemin", "85000",
-				"Lossangeles", "ElephantRose*85", 1500, false);
-		request.setAttribute("user", user);
-		
-		/* Modification du format de la date : LocalDate > Date */
-		ZoneId defaultZoneId = ZoneId.systemDefault();
-		Date dateFinEnchere_formatDate = Date.from(articleConsulte.getDateFinEncheres().atStartOfDay(defaultZoneId).toInstant());
-		
-		request.setAttribute("titre", articleConsulte.getNomArticle());
-		request.setAttribute("article", articleConsulte);
-		request.setAttribute("image", URLimage);
-		request.setAttribute("retrait", retrait);
-		request.setAttribute("categorie", categorie);
-		request.setAttribute("nomGagnant", nomGagnant);
-		request.setAttribute("nomVendeur", nomVendeur);
-		request.setAttribute("miseMax", miseMax);
-		request.setAttribute("dateFinEnchere_formatDate", dateFinEnchere_formatDate);
-		
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Encheres/DetailEnchere.jsp");
-		rd.forward(request, response);
+		// Gestion si pas de session utilisateur
+		if (user == null) {
+			NullPointerException npe = new NullPointerException("Vous devez être connecté pour afficher cette page");
+			System.out.println(npe.getMessage());
+			throw npe;
+		} else {
+			// TODO rediriger vers l'accueil si l'utilisateur n'est pas connecté
+			
+			// TODO rediriger vers la page de modification de la vente si l'utilisateur connecté est le détenteur de l'article
+			// et si la date de début d'enchère n'est pas passée
+			
+			// TODO récupérer l'article depuis Encheres.jsp
+			EncheresBLL encheresBLL = new EncheresBLL();
+			
+			try {
+				int articleId = Integer.parseInt(request.getParameter("id"));
+				Article articleConsulte = encheresBLL.afficherArticle(articleId);
+				System.out.println(articleConsulte);
+
+			// TODO ajouter l'url à l'article
+			String URLimage = "../Public/Images/pc.jpg";
+			
+			// TODO récupérer le nom du vendeur à l'aide du vendeurId de l'article
+			String nomVendeur = "De Montmirail";
+			
+			// TODO récupérer le nom de la catégorie en fonction de la categoryId de l'article
+			String categorie = "Informatique";
+			
+			// TODO récupérer le montant de la meilleur offre et le nom de l'utilisateur correspondant
+			String nomGagnant = "Godefroy";
+			int miseMax = 250;
+			
+			// TODO récupérer le point retrait correspondant à l'article
+			Retrait retrait = new Retrait("15478 rue très loin", "75000", "Marseille");
+			
+			/* Modification du format de la date */
+			Date date_fin_enchere = localDateToDate(articleConsulte.getDateFinEncheres());
+			
+			request.setAttribute("titre", articleConsulte.getNomArticle());
+			request.setAttribute("article", articleConsulte);
+			request.setAttribute("image", URLimage);
+			request.setAttribute("retrait", retrait);
+			request.setAttribute("categorie", categorie);
+			request.setAttribute("nomGagnant", nomGagnant);
+			request.setAttribute("nomVendeur", nomVendeur);
+			request.setAttribute("miseMax", miseMax);
+			request.setAttribute("dateFinEnchere_formatDate", date_fin_enchere);
+			
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Encheres/DetailEnchere.jsp");
+			rd.forward(request, response);
+			
+			} catch (NumberFormatException | NullPointerException e) {
+				// TODO créer une page 404 qui affiche la liste des erreurs
+				response.sendError(HttpServletResponse.SC_NOT_FOUND);
+				e.printStackTrace();
+			} catch (BusinessException be) {
+				be.printStackTrace();
+			}
+		}
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		int idArticle = 0;
+		try {
+			idArticle = Integer.parseInt(request.getParameter("idArticle"));
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+		}
+		response.sendRedirect(request.getContextPath()+"/encheres/detailEnchere?id=" + idArticle);
 	}
-
+	
+	/**
+	 * Méthode pour convertir un format LocalDate en format Date
+	 * @param LocalDate
+	 * @return Date
+	 */
+	public Date localDateToDate(LocalDate localDate) {
+		ZoneId defaultZoneId = ZoneId.systemDefault();
+		Date date = Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
+		return date;
+	}
 }

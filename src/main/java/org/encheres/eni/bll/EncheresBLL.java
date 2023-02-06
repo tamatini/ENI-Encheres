@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import org.encheres.eni.BusinessException;
 import org.encheres.eni.bo.Article;
+import org.encheres.eni.bo.Utilisateur;
 import org.encheres.eni.dal.DAO;
 import org.encheres.eni.dal.DAOFactory;
 
@@ -70,4 +71,16 @@ public class EncheresBLL {
 	
 	// Enchérir une vente
 	
+	/**
+	 * Méthode pour afficher un article
+	 * @param articleId
+	 * @return article
+	 */
+	public Article afficherArticle(int articleId) throws BusinessException {
+		BusinessException businessException = new BusinessException();
+		if (articleId == 0) {
+			businessException.ajouterErreur(CodesResultatBLL.SELECT_BY_ID_ARTICLE_NULL);
+		}
+		return articleDAO.selectById(articleId);
+	}
 }

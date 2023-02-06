@@ -250,12 +250,12 @@ public class UtilisateurBLL {
 	}
 
 	// Voir un utilisateur
-	public Utilisateur afficherProfil (int utilisateurId) {
+	public Utilisateur afficherProfil (int utilisateurId) throws BusinessException {
 		return utilisateurDAO.selectById(utilisateurId);
 	}
 
 	/**
-	 * La méthode controlle le pseudo et le mot de passe saisie
+	 * La méthode controle le pseudo et le mot de passe saisie
 	 * @param pseudo le pseudo
 	 * @param motDePasse le mot de passe
 	 * @return l'utilisateur

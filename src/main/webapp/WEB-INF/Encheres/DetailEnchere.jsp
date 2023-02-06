@@ -57,7 +57,7 @@
     	      <td>
     	        <form method="POST" action="${pageContext.request.contextPath}/encheres/detailEnchere">
     	          <input class="form_input_light" type="number" min="${miseMax + 1}" max="${user.credit}" value="${miseMax + 10}">
-    	          <button class="form_button_light" type="submit">Enchérir</button>
+    	          <button class="form_button_light" type="submit" name="idArticle" value="${article.articleId}">Enchérir</button>
     	        </form>
     	      </td>
     	    </tr>    
