@@ -24,10 +24,12 @@
           <td class="auction_table_titles">Catégorie :</td>
           <td>${categorie}</td>
         </tr>
-        <tr>
-          <td class="auction_table_titles">Meilleure offre :</td>
-          <td>${miseMax} pts par ${nomGagnant}</td>
-        </tr>
+        <c:if test="${!empty nomGagnant}">
+          <tr>
+            <td class="auction_table_titles">Meilleure offre :</td>
+            <td>${miseMax} pts par ${nomGagnant}</td>
+          </tr>
+        </c:if>
         <tr>
           <td class="auction_table_titles">Mise à prix :</td>
           <td>${article.prixInitial} points</td>

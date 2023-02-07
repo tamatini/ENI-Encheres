@@ -18,6 +18,7 @@ import org.encheres.eni.bll.CategorieBLL;
 import org.encheres.eni.bll.EncheresBLL;
 import org.encheres.eni.bll.UtilisateurBLL;
 import org.encheres.eni.bo.Article;
+import org.encheres.eni.bo.Enchere;
 import org.encheres.eni.bo.Retrait;
 import org.encheres.eni.bo.Utilisateur;
 
@@ -34,12 +35,10 @@ public class DetailEnchere extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		Utilisateur user = (Utilisateur) session.getAttribute("user");
+		EncheresBLL encheresBLL = new EncheresBLL();
 				
 		// TODO rediriger vers la page de modification de la vente si l'utilisateur connecté est le détenteur de l'article
 		// et si la date de début d'enchère n'est pas passée
-		
-		// TODO récupérer directement l'enchère
-		EncheresBLL encheresBLL = new EncheresBLL();
 		
 		try {
 			
@@ -51,9 +50,16 @@ public class DetailEnchere extends HttpServlet {
 			}
 			 
 			int articleId = Integer.parseInt(request.getParameter("id")); // Peut lever une NumberFormatException redirigée vers 404
-			Article articleConsulte = encheresBLL.afficherArticle(articleId);
-			System.out.println(articleConsulte);
 	
+			// Récupération de la meilleure enchère avec l'article
+			Enchere enchereGagnante = encheresBLL.afficherMeilleureEnchere(articleId);
+			Article articleConsulte = enchereGagnante.getArticle();
+			int miseMax = enchereGagnante.getMontant_enchere();
+			String nomGagnant = null;
+			if (enchereGagnante.getAcheteur() != null) {
+				nomGagnant = enchereGagnante.getAcheteur().getPseudo();
+			}
+			
 			// TODO ajouter l'url à l'article
 			String URLimage = "../Public/Images/pc.jpg";
 			
@@ -65,10 +71,6 @@ public class DetailEnchere extends HttpServlet {
 			CategorieBLL categorieArticle = new CategorieBLL();
 			String categorie = categorieArticle.afficherCategorie(articleConsulte.getCategoryId()).getLibelle();
 			
-			
-			// TODO récupérer le montant de la meilleur offre et le nom de l'utilisateur correspondant
-			String nomGagnant = "Godefroy";
-			int miseMax = 250;
 			
 			// TODO récupérer le point retrait correspondant à l'article
 			Retrait retrait = new Retrait("15478 rue très loin", "75000", "Marseille", 1);
@@ -89,12 +91,14 @@ public class DetailEnchere extends HttpServlet {
 			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Encheres/DetailEnchere.jsp");
 			rd.forward(request, response);
 		
-		} catch (NumberFormatException | NullPointerException e) {
-			// TODO créer une page 404 qui affiche la liste des erreurs
+		} catch (NumberFormatException | NullPointerException ne) {
+			// TODO créer une page 404 personnalisée qui affiche la liste des erreurs
+			ne.printStackTrace();
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
-			e.printStackTrace();
 		} catch (BusinessException be) {
 			be.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
