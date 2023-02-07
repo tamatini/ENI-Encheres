@@ -8,46 +8,46 @@ import java.time.LocalDate;
  */
 public class Enchere {
 	
-	private int vendeurId;
-	private int articleId;
+	private Utilisateur vendeur;
+	private Article article;
 	private LocalDate dateEnchere;
 	private int montant_enchere;
 	
 	/**
 	 * Constructeur tous paramètres
-	 * @param vendeurId
-	 * @param articleId
+	 * @param vendeur
+	 * @param article
 	 * @param dateEnchere
 	 * @param montant_enchere
 	 */
-	public Enchere(int vendeurId, int articleId, LocalDate dateEnchere, int montant_enchere) {
-		this.vendeurId = vendeurId;
-		this.articleId = articleId;
+	public Enchere(Utilisateur vendeur, Article article, LocalDate dateEnchere, int montant_enchere) {
+		this.vendeur = vendeur;
+		this.article = article;
 		this.dateEnchere = dateEnchere;
 		this.montant_enchere = montant_enchere;
 	}
-	
+
 	/**
 	 * Constructeur sans paramètres
 	 */
 	public Enchere() {
 	}
 
-	/* Getters et setters */
-	public int getVendeurId() {
-		return vendeurId;
+	/* Getters & Setters */
+	public Utilisateur getVendeur() {
+		return vendeur;
 	}
 
-	public void setVendeurId(int vendeurId) {
-		this.vendeurId = vendeurId;
+	public void setVendeur(Utilisateur vendeur) {
+		this.vendeur = vendeur;
 	}
 
-	public int getArticleId() {
-		return articleId;
+	public Article getArticle() {
+		return article;
 	}
 
-	public void setArticleId(int articleId) {
-		this.articleId = articleId;
+	public void setArticle(Article article) {
+		this.article = article;
 	}
 
 	public LocalDate getDateEnchere() {
@@ -64,10 +64,5 @@ public class Enchere {
 
 	public void setMontant_enchere(int montant_enchere) {
 		this.montant_enchere = montant_enchere;
-	}
-	
-	@Override
-	public String toString() {
-		return super.toString();
 	}
 }

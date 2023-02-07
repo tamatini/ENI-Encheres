@@ -6,6 +6,7 @@ import org.encheres.eni.BusinessException;
 import org.encheres.eni.bo.Article;
 import org.encheres.eni.bo.Enchere;
 import org.encheres.eni.bo.Retrait;
+import org.encheres.eni.bo.Utilisateur;
 import org.encheres.eni.dal.DAO;
 import org.encheres.eni.dal.DAOFactory;
 
@@ -278,6 +279,7 @@ public class EncheresBLL {
 		BusinessException businessException = new BusinessException();
 		Enchere enchere = new Enchere();
 		Article article = new Article();
+		Utilisateur vendeur = new Utilisateur();
 		article = articleDAO.selectById(articleId);
 		
 		if (article == null) {
@@ -287,9 +289,9 @@ public class EncheresBLL {
 		if(businessException.hasErreurs()) {
 			throw businessException;
 		} else if (enchereDAO.selectById(articleId) == null){
-			enchere.setArticleId(articleId);
+			enchere.setArticle(article);
 			enchere.setMontant_enchere(article.getPrixInitial());
-			enchere.setVendeurId(article.getVendeurId());
+			enchere.setVendeur(vendeur);
 		} else {
 			enchere = enchereDAO.selectById(articleId);
 		}
