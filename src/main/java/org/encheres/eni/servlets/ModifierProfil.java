@@ -47,32 +47,31 @@ public class ModifierProfil extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		UtilisateurBLL utilisateurBLL = new UtilisateurBLL();
-		HttpSession session = request.getSession(false);
-		Utilisateur user = null; 
-		String controle_motDePasse = null;
-		String nouveauPseudo = null;
-		String nouveauEmail = null;
-		String nouveauMotDePasse = null;
-		if(session !=null) {
-			user = (Utilisateur) session.getAttribute("user");
-				
+		UtilisateurBLL utilisateurBLL = new UtilisateurBLL(); //
+		HttpSession session = request.getSession(false); //
+		
+		if(session != null) {
+			Utilisateur user = (Utilisateur) session.getAttribute("user");
+			int userId = user.getUtilisateurId(); // venir récupérer l'Id de l'utilisateur
+			System.out.println(userId);
+			
 			try {
+				Utilisateur profilModifie = new Utilisateur(); // créer une instance d'untilisateur qui va permettre de récupérer les données du formulaire
+				// récupérer valeurs des champs
+				profilModifie.setPseudo((String) request.getParameter("pseudo"));
+				profilModifie.setNom((String) request.getParameter("nom"));
+				profilModifie.setPrenom((String) request.getParameter("prenom"));
+				profilModifie.setEmail((String) request.getParameter("email"));
+				profilModifie.setTelephone((String) request.getParameter("telephone"));
+				profilModifie.setRue((String) request.getParameter("rue"));
+				profilModifie.setCodePostal((String) request.getParameter("codePostal"));
+				profilModifie.setVille((String) request.getParameter("ville"));
+				profilModifie.setMotDePasse((String) request.getParameter("motDePasse"));
+				String nouveauMotDePasse = request.getParameter("nouveauMotDePasse");
+				String controle_motDePasse = request.getParameter("controle_motDePasse");
 				
-				nouveauPseudo = request.getParameter("pseudo");
-				user.setNom((String) request.getParameter("nom"));
-				user.setPrenom((String) request.getParameter("prenom"));
-				nouveauEmail = request.getParameter("email");
-				user.setTelephone((String) request.getParameter("telephone"));
-				user.setRue((String) request.getParameter("rue"));
-				user.setCodePostal((String) request.getParameter("codePostal"));
-				user.setVille((String) request.getParameter("ville"));
-				user.setMotDePasse((String) request.getParameter("motDePasse"));
-				nouveauMotDePasse = request.getParameter("nouveauMotDePasse");
-				controle_motDePasse = request.getParameter("controle_motDePasse");
 				
-				
-				utilisateurBLL.modifierUtilisateur(user, controle_motDePasse, nouveauPseudo, nouveauEmail, nouveauMotDePasse);
+				utilisateurBLL.modifierUtilisateur(userId, profilModifie, nouveauMotDePasse, controle_motDePasse);
 				
 				response.sendRedirect(request.getContextPath()+"/encheres");
 				
@@ -81,8 +80,10 @@ public class ModifierProfil extends HttpServlet {
 				request.setAttribute("Liste_codes_erreurs", e.getListeCodesErreur());
 				e.printStackTrace();
 				request.getRequestDispatcher("/WEB-INF/Encheres/ModifierProfil.jsp").forward(request, response);
-			
+			}
+		} else {
+			response.sendRedirect(request.getContextPath()+"/encheres"); // redirection vers la page d'accueil
 		}
 	}
 }
-}
+
