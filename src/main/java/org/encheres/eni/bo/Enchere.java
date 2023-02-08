@@ -8,7 +8,7 @@ import java.time.LocalDate;
  */
 public class Enchere {
 	
-	private Utilisateur vendeur;
+	private Utilisateur acheteur;
 	private Article article;
 	private LocalDate dateEnchere;
 	private int montant_enchere;
@@ -20,8 +20,8 @@ public class Enchere {
 	 * @param dateEnchere
 	 * @param montant_enchere
 	 */
-	public Enchere(Utilisateur vendeur, Article article, LocalDate dateEnchere, int montant_enchere) {
-		this.vendeur = vendeur;
+	public Enchere(Utilisateur acheteur, Article article, LocalDate dateEnchere, int montant_enchere) {
+		this.acheteur = acheteur;
 		this.article = article;
 		this.dateEnchere = dateEnchere;
 		this.montant_enchere = montant_enchere;
@@ -34,12 +34,12 @@ public class Enchere {
 	}
 
 	/* Getters & Setters */
-	public Utilisateur getVendeur() {
-		return vendeur;
+	public Utilisateur getAcheteur() {
+		return acheteur;
 	}
 
-	public void setVendeur(Utilisateur vendeur) {
-		this.vendeur = vendeur;
+	public void setAcheteur(Utilisateur vendeur) {
+		this.acheteur = vendeur;
 	}
 
 	public Article getArticle() {

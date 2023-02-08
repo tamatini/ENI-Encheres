@@ -1,24 +1,27 @@
 package org.encheres.eni.bll;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.encheres.eni.BusinessException;
 import org.encheres.eni.bo.Article;
 import org.encheres.eni.bo.Enchere;
 import org.encheres.eni.bo.Retrait;
-import org.encheres.eni.bo.Utilisateur;
 import org.encheres.eni.dal.DAO;
 import org.encheres.eni.dal.DAOFactory;
+import org.encheres.eni.dal.EnchereDAO;
 
 public class EncheresBLL {
 	
 	private DAO<Article> articleDAO;
 	private DAO<Retrait> retraitDAO;
-	private DAO<Enchere> enchereDAO;
+	private EnchereDAO enchereDAO;
 
 	public EncheresBLL() {
 		this.articleDAO = DAOFactory.getArticleDAO();
 		this.retraitDAO = DAOFactory.getRetraitDAO();
+		this.enchereDAO = (EnchereDAO) DAOFactory.getEnchereDAO();
 	}
 	
 	/**
@@ -266,37 +269,42 @@ public class EncheresBLL {
 		BusinessException businessException = new BusinessException();
 		if (articleDAO.selectById(articleId) == null) {
 			businessException.ajouterErreur(CodesResultatBLL.SELECT_BY_ID_ARTICLE_NULL);
+			throw businessException;
 		}
 		return articleDAO.selectById(articleId);
 	}
 	
 	/**
-	 * Méthode pour afficher une enchère
+	 * Méthode pour afficher la meilleure enchère sur un article
 	 * @param articleId
-	 * @return article
+	 * @return meilleureEnchere
 	 */
-	public Enchere afficherEnchere(int articleId) throws BusinessException {
-		BusinessException businessException = new BusinessException();
-		Enchere enchere = new Enchere();
-		Article article = new Article();
-		Utilisateur vendeur = new Utilisateur();
-		article = articleDAO.selectById(articleId);
+	public Enchere afficherMeilleureEnchere(int articleId) throws BusinessException {
+		List<Enchere> ListeEncheres = new ArrayList<>();
+		Enchere meilleureEnchere = new Enchere();
 		
-		if (article == null) {
-			businessException.ajouterErreur(CodesResultatBLL.SELECT_BY_ID_ARTICLE_NULL);
-		}
+		// Récupération de l'article
+		Article article = this.articleDAO.selectById(articleId);
+		meilleureEnchere.setArticle(article);
 		
-		if(businessException.hasErreurs()) {
-			throw businessException;
-		} else if (enchereDAO.selectById(articleId) == null){
-			enchere.setArticle(article);
-			enchere.setMontant_enchere(article.getPrixInitial());
-			enchere.setVendeur(vendeur);
+		ListeEncheres = this.enchereDAO.selectAllByArticleId(articleId);
+		
+		// Insertion du prix initial de l'article s'il n'y a pas eu des enchères
+		if (ListeEncheres.size() == 0) {
+			meilleureEnchere.setMontant_enchere(article.getPrixInitial());
+			
+		// Sinon on sélectionne la meilleur enchère de la liste
 		} else {
-			enchere = enchereDAO.selectById(articleId);
+			int meilleureOffre = 0;
+			for (Enchere current : ListeEncheres) {
+				if (current.getMontant_enchere() > meilleureOffre) {
+					meilleureEnchere.setAcheteur(current.getAcheteur());
+					meilleureEnchere.setDateEnchere(current.getDateEnchere());
+					meilleureEnchere.setMontant_enchere(current.getMontant_enchere());
+					meilleureOffre = current.getMontant_enchere();
+				}
+			}
 		}
-		return enchere;
+		return meilleureEnchere;
 	}
-	
-	
 }

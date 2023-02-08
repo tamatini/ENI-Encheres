@@ -8,7 +8,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.encheres.eni.BusinessException;
 import org.encheres.eni.bll.UtilisateurBLL;
@@ -35,7 +34,6 @@ public class Inscription extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		RequestDispatcher rd;
 		UtilisateurBLL utilisateurBLL = new UtilisateurBLL();
 		Utilisateur nouvelUtilisateur = new Utilisateur();
 		String controle_motDePasse = null;
