@@ -68,16 +68,17 @@ public class VenteArticle extends HttpServlet {
 		// gestion des images
 		// adresse de stockage de l'image
 		String IMAGE_FOLDER = "/Public/Images/tests";
-		String uploadPath = getServletContext().getRealPath(IMAGE_FOLDER); 
+		String uploadPath = getServletContext().getRealPath(IMAGE_FOLDER);
+		String fileName = "";
 		
 		Part filePart = request.getPart("file");
-		String fileName = filePart.getSubmittedFileName();
 		for (Part part : request.getParts()) {
+			fileName = part.getSubmittedFileName();
 			String fullPath = uploadPath + File.separator + fileName;
-			System.out.println(fullPath);
-			part.write("C:\\Projet\\Images" + fileName);
+			part.write(fullPath);
 		}
-		
+		fileName = filePart.getSubmittedFileName(); 
+
 		
 		List<Integer> listeCodesErreurs = new ArrayList<>();
 		Utilisateur utilisateur = (Utilisateur) request.getSession().getAttribute("user");
@@ -95,7 +96,6 @@ public class VenteArticle extends HttpServlet {
 		rue = request.getParameter("rue");
 		ville = request.getParameter("ville");
 		codePostal = request.getParameter("codePostal");
-		
 		
 		if (listeCodesErreurs.size() > 0) {
 			request.setAttribute("listeCodesErreurs", listeCodesErreurs);

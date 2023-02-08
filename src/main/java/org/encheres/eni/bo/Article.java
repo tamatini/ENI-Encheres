@@ -17,6 +17,7 @@ public class Article {
 	private int vendeurId;
 	private int categoryId;
 	private String imageURL;
+	private Utilisateur utilisateur;
 	
 	/**
 	 * Constructeur de la classe objet article sans paramètre
@@ -209,6 +210,15 @@ public class Article {
 	public String getImageURL() {
 		return imageURL;
 	}
+	
+	public void setUtilisateur(Utilisateur utilisateur) {
+		this.utilisateur = utilisateur;
+	}
+	
+	public Utilisateur getUtilisateur() {
+		return utilisateur;
+	}
+	
 	
 	/**
 	 * Article [articleId: 1, nomArticle: pc gamer, description: pc gamer neuf, dateDebutEncheres: 02-02-2022-00:00:00:000, 
