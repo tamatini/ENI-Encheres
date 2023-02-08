@@ -29,7 +29,7 @@
     <ul class="card_deck">
       <li class="card">
         <div class="card_image_section">
-          <img class="card_image" src="./Public/Images/pc.jpg" alt="">
+          <img class="card_image" src="../Public/Images/tests/${ article.imageURL }" alt="">
         </div>
         <div class="card_text_section">
           <div class="card_text_header">
