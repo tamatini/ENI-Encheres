@@ -28,6 +28,16 @@ public class EncheresBLL {
 		this.utilisateurDAO = (UtilisateurDAO) DAOFactory.getUtilisateurDAO();
 	}
 	
+	public List<Article> listeEnchere() {
+		List<Article> articles = null;
+		try {
+			articles = this.articleDAO.selectAll();
+		} catch (BusinessException e) {
+			e.printStackTrace();
+		}
+		return articles;
+	}
+	
 	/**
 	 * Ajoute un nouvel article associé à un utilisateur et une catégorie
 	 * @param nomArticle le nom de la vente

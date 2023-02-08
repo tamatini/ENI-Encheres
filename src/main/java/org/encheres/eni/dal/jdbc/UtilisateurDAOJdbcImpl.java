@@ -21,9 +21,8 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 			+ "values (?,?,?,?,?,?,?,?,?,0,0)";
 	
 	/**
-	 * La méthode retourne le pseudo et le mot de passe de l'utilisateur
 	 * @param pseudo le pseudo de l'utilisateur
-	 * @return l'utilisateur existant
+	 * @return l'utilisateur
 	 * @throws BusinessException 
 	 */
 	@Override
