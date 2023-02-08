@@ -34,8 +34,6 @@ public class DetailEnchere extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		Utilisateur user = (Utilisateur) session.getAttribute("user");
-		EncheresBLL encheresBLL = new EncheresBLL();
 				
 		// TODO rediriger vers la page de modification de la vente si l'utilisateur connecté est le détenteur de l'article
 		// et si la date de début d'enchère n'est pas passée
@@ -43,12 +41,14 @@ public class DetailEnchere extends HttpServlet {
 		try {
 			
 			// Gestion si pas d'utilisateur connecté
-			if (user == null) {
+			if (session == null) {
 				NullPointerException npe = new NullPointerException("Vous devez être connecté pour afficher cette page");
 				System.out.println(npe.getMessage());
 				throw npe;
 			}
-			 
+//			Utilisateur user = (Utilisateur) session.getAttribute("user");
+			EncheresBLL encheresBLL = new EncheresBLL();
+			
 			int articleId = Integer.parseInt(request.getParameter("id")); // Peut lever une NumberFormatException redirigée vers 404
 	
 			// Récupération de la meilleure enchère avec l'article
@@ -99,41 +99,40 @@ public class DetailEnchere extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		EncheresBLL encheresBLL = new EncheresBLL();
 		HttpSession session = request.getSession();
-		Utilisateur user = (Utilisateur) session.getAttribute("user");
-		int idArticle = 0;
-		int nouvelleOffre = 0;
+		int articleId = 0;
 		
 		try {
 			// Gestion si pas d'utilisateur connecté
-			if (user == null) {
+			if (session == null) {
 				NullPointerException npe = new NullPointerException("Vous devez être connecté pour afficher cette page");
-				System.out.println(npe.getMessage());
 				throw npe;
 			}
+			Utilisateur user = (Utilisateur) session.getAttribute("user");
+			int userId = user.getUtilisateurId();
+			int nouvelleOffre = 0;
 			
-			idArticle = Integer.parseInt(request.getParameter("idArticle"));
+			articleId = Integer.parseInt(request.getParameter("articleId"));
 			nouvelleOffre = Integer.parseInt(request.getParameter("nouvelleOffre"));
 			
-			encheresBLL.creerEnchere(idArticle, user, nouvelleOffre);
-			response.sendRedirect(request.getContextPath()+"/encheres/detailEnchere?id=" + idArticle);
+			encheresBLL.creerEnchere(articleId, userId, nouvelleOffre);
+			response.sendRedirect(request.getContextPath()+"/encheres/detailEnchere?id=" + articleId);
 			
 		} catch (NumberFormatException nfe) {
 			// TODO gérer l'affichage des erreurs sur la jsp DetailEnchere
 			BusinessException businessException = new BusinessException();
 			businessException.ajouterErreur(CodesResultatServlets.FORMAT_NOUVELLE_OFFRE_ERREUR);
 			request.setAttribute("Liste_codes_erreurs", businessException.getListeCodesErreur());
-			request.setAttribute("idArticle", idArticle);
-			System.out.println("Le montant de la nouvelle offre n'est pas au format numérique");
+			request.setAttribute("id", articleId);
 			nfe.printStackTrace();
 			doGet(request, response);
 		} catch (NullPointerException npe) {
 			// TODO gérer l'affichage des erreurs sur la page d'accueil
-			System.out.println("Vous avez été déconnecté, veuillez vous identifier");
+			System.err.println("Vous avez été déconnecté, veuillez vous identifier");
 			npe.printStackTrace();
 			response.sendRedirect(request.getContextPath()+"/encheres");
 		} catch (BusinessException be) {
 			request.setAttribute("Liste_codes_erreurs", be.getListeCodesErreur());
-			request.setAttribute("idArticle", idArticle);
+			request.setAttribute("id", articleId);
 			doGet(request, response);
 		}
 	}

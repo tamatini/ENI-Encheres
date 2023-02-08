@@ -39,7 +39,7 @@ TODO bonton modifier doit s'afficher quand c'est le user est connecté
 	      <td>${ utilisateur.ville }</td>
 		</tr>    
 	</table>
-		<a class="form_button" href="${pageContext.request.contextPath}/encheres/ModifierProfil">Modifier</a>	
+		<a class="form_button" href="${pageContext.request.contextPath}/encheres/ModifierProfil?id=${user.utilisateurId}">Modifier</a>	
 	
 <!--<div>
 	<c:if test="{ utilisateur.utilisatuerId == user.utilisateurId }">	

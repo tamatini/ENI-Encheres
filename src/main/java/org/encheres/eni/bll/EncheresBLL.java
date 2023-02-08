@@ -329,40 +329,55 @@ public class EncheresBLL {
 		return retrait;
 	}
 
-	public void creerEnchere(int idArticle, Utilisateur user, int nouvelleOffre) throws BusinessException {
+	public void creerEnchere(int articleId, int userId, int nouvelleOffre) throws BusinessException {
 		BusinessException businessException = new BusinessException();
-		Enchere nouvelleEnchere = new Enchere();
-		Enchere ancienneEnchere = new Enchere();
-		Utilisateur ancienEncherisseur = new Utilisateur();
-		ancienneEnchere = afficherMeilleureEnchere(idArticle);
 		
+		// Récupération de la précédente enchère avec le dernier encherisseur si non null
+		Enchere ancienneEnchere = new Enchere();
+		ancienneEnchere = afficherMeilleureEnchere(articleId);
+		
+		// Instanciation de la nouvelle enchère
+		Enchere nouvelleEnchere = new Enchere();
+		
+		// Récupération du nouveau enchérisseur depuis la BDD
+		Utilisateur nouvelEncherisseur = new Utilisateur();
+		nouvelEncherisseur = utilisateurDAO.selectById(userId);
+		
+		//Mode debug
+		System.out.println("Ancienne enchère : " + ancienneEnchere);
+		System.out.println("Nouvelle enchère : " + nouvelleEnchere);
+		System.out.println("Précédent enchérisseur : " + ancienneEnchere.getAcheteur());
+		System.out.println("Nouvel enchérisseur : " + userId + " : " + nouvelEncherisseur);
+		
+		/* Vérifications logique métier */
 		if (nouvelleOffre <= ancienneEnchere.getMontant_enchere()) {
 			businessException.ajouterErreur(CodesResultatBLL.INSERT_BID_AMOUNT_MINI_ERROR);
 		}
-		if (nouvelleOffre > user.getCredit()) {
+		if (nouvelleOffre > nouvelEncherisseur.getCredit()) {
 			businessException.ajouterErreur(CodesResultatBLL.INSERT_USER_NOT_ENOUGH_CREDITS);
 		}
 		
 		if(businessException.hasErreurs()) {
 			throw businessException;
 		} else {
-			// Insertion de la nouvelle enchère
+			// Insertion de la nouvelle enchère en BDD
 			nouvelleEnchere.setArticle(ancienneEnchere.getArticle());
 			nouvelleEnchere.setMontant_enchere(nouvelleOffre);
 			nouvelleEnchere.setDateEnchere(LocalDate.now());
-			nouvelleEnchere.setAcheteur(user);
+			nouvelleEnchere.setAcheteur(nouvelEncherisseur);
 			this.enchereDAO.insert(nouvelleEnchere);
 			
 			// Ancienne mise retournée au précédent enchérisseur
 			if (ancienneEnchere.getAcheteur() != null) {
+				Utilisateur ancienEncherisseur = new Utilisateur();
 				ancienEncherisseur = ancienneEnchere.getAcheteur();
 				ancienEncherisseur.setCredit(ancienEncherisseur.getCredit() + ancienneEnchere.getMontant_enchere());
 				this.utilisateurDAO.updateCredit(ancienEncherisseur.getUtilisateurId(), ancienEncherisseur.getCredit());
 			}
 			
 			// Nouvelle mise déduite du nouvel enchérisseur
-			user.setCredit(user.getCredit() - nouvelleOffre);
-			this.utilisateurDAO.updateCredit(user.getUtilisateurId(), user.getCredit());
+			nouvelEncherisseur.setCredit(nouvelEncherisseur.getCredit() - nouvelleOffre);
+			this.utilisateurDAO.updateCredit(userId, nouvelEncherisseur.getCredit());
 		}
 	}
 }
