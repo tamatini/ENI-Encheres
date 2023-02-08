@@ -34,10 +34,13 @@ TODO revoir le completion du champs email qui est reste vide
             <input class="form_input" name="ville" type="text" value="${user.ville}" placeholder="Ville" maxlength="30" required>
           </div>
           <div class="form_create_section">
-            <input class="form_input" name="motDePasse" type="password" value="${user.motDePasse}" placeholder="Mot de passe (8 caractères min.)" minlength="8" maxlength="30" required>
+            <input class="form_input" name="motDePasse" type="password" placeholder="Mot de passe (8 caractères min.)" minlength="8" maxlength="30" required>
           </div>
           <div class="form_create_section">
-            <input class="form_input" name="controle_motDePasse" type="password" placeholder="Confirmer mot de passe" minlength="8" maxlength="30" required>
+            <input class="form_input" name="nouveauMotDePasse" type="password" placeholder="Nouveau mot de passe (8 caractères min.)" minlength="8" maxlength="30" >
+          </div>
+          <div class="form_create_section">
+            <input class="form_input" name="controle_motDePasse" type="password" placeholder="Confirmer mot de passe" minlength="8" maxlength="30" >
           </div >
           <div class="form_create_section">
           	<p>Crédit : ${ user.credit }</p>
