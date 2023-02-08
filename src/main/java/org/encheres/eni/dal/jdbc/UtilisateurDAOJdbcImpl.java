@@ -15,6 +15,7 @@ import org.encheres.eni.dal.UtilisateurDAO;
 public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	private String SELECT_BY_PSEUDO = "SELECT * FROM Utilisateurs WHERE pseudo=?";
 	private String SELECT_BY_EMAIL = "SELECT * FROM Utilisateurs WHERE email=?";
+	private static final String SQL_UPDATE_CREDIT = "UPDATE Utilisateurs SET credit = ? WHERE utilisateurId = ?";
 	private static final String SQL_INSERT = "INSERT INTO UTILISATEURS (pseudo, nom, prenom, email, telephone, "
 			+ "rue, codePostal, ville, motDePasse, credit, administrateur) "
 			+ "values (?,?,?,?,?,?,?,?,?,0,0)";
@@ -56,12 +57,6 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	
 	@Override
 	public void insert(Utilisateur utilisateur) throws BusinessException {
-		/* TODO or notTODO : vérifier si insertion objet null
-		if(utilisateur == null) {
-			BusinessException businessException = new BusinessException();
-			businessException.ajouterErreur(CodesResultatDAL.INSERT_OBJECT_NULL);
-			throw businessException;
-		} */
 		try(Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement pstmt = cnx.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
 			pstmt.setString(1, utilisateur.getPseudo());
@@ -193,5 +188,20 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	public List<Utilisateur> selectAll() throws BusinessException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void updateCredit(int id, int credit) throws BusinessException {
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SQL_UPDATE_CREDIT);
+			pstmt.setInt(1, credit);
+			pstmt.setInt(2, id);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.UPDATE_USER_ECHEC);
+			throw businessException;
+		}
 	}
 }

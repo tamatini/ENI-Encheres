@@ -22,5 +22,6 @@ public abstract class CodesResultatDAL {
 	
 	// Echec Enchere
 	public static final int SELECT_ENCHERE_ECHEC = 10040;
+	public static final int INSERT_BID_ECHEC = 10041;
 	
 }

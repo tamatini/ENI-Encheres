@@ -8,20 +8,24 @@ import org.encheres.eni.BusinessException;
 import org.encheres.eni.bo.Article;
 import org.encheres.eni.bo.Enchere;
 import org.encheres.eni.bo.Retrait;
+import org.encheres.eni.bo.Utilisateur;
 import org.encheres.eni.dal.DAO;
 import org.encheres.eni.dal.DAOFactory;
 import org.encheres.eni.dal.EnchereDAO;
+import org.encheres.eni.dal.UtilisateurDAO;
 
 public class EncheresBLL {
 	
 	private DAO<Article> articleDAO;
 	private DAO<Retrait> retraitDAO;
 	private EnchereDAO enchereDAO;
+	private UtilisateurDAO utilisateurDAO;
 
 	public EncheresBLL() {
 		this.articleDAO = DAOFactory.getArticleDAO();
 		this.retraitDAO = DAOFactory.getRetraitDAO();
 		this.enchereDAO = (EnchereDAO) DAOFactory.getEnchereDAO();
+		this.utilisateurDAO = (UtilisateurDAO) DAOFactory.getUtilisateurDAO();
 	}
 	
 	/**
@@ -277,7 +281,8 @@ public class EncheresBLL {
 	/**
 	 * Méthode pour afficher la meilleure enchère sur un article
 	 * @param articleId
-	 * @return meilleureEnchere
+	 * @return si une enchère existe sur l'article : la meilleur enchère
+	 * @return si l'article n'a pas été enchéri : l'enchère avec l'article, une date nulle, un montant égal au prix initial et un acheteur nul
 	 */
 	public Enchere afficherMeilleureEnchere(int articleId) throws BusinessException {
 		List<Enchere> ListeEncheres = new ArrayList<>();
@@ -306,5 +311,48 @@ public class EncheresBLL {
 			}
 		}
 		return meilleureEnchere;
+	}
+	
+	public Retrait afficherRetrait(int articleId) throws BusinessException {
+		Retrait retrait = new Retrait();
+		retrait = this.retraitDAO.selectById(articleId);
+		return retrait;
+	}
+
+	public void creerEnchere(int idArticle, Utilisateur user, int nouvelleOffre) throws BusinessException {
+		BusinessException businessException = new BusinessException();
+		Enchere nouvelleEnchere = new Enchere();
+		Enchere ancienneEnchere = new Enchere();
+		Utilisateur ancienEncherisseur = new Utilisateur();
+		ancienneEnchere = afficherMeilleureEnchere(idArticle);
+		
+		if (nouvelleOffre <= ancienneEnchere.getMontant_enchere()) {
+			businessException.ajouterErreur(CodesResultatBLL.INSERT_BID_AMOUNT_MINI_ERROR);
+		}
+		if (nouvelleOffre > user.getCredit()) {
+			businessException.ajouterErreur(CodesResultatBLL.INSERT_USER_NOT_ENOUGH_CREDITS);
+		}
+		
+		if(businessException.hasErreurs()) {
+			throw businessException;
+		} else {
+			// Insertion de la nouvelle enchère
+			nouvelleEnchere.setArticle(ancienneEnchere.getArticle());
+			nouvelleEnchere.setMontant_enchere(nouvelleOffre);
+			nouvelleEnchere.setDateEnchere(LocalDate.now());
+			nouvelleEnchere.setAcheteur(user);
+			this.enchereDAO.insert(nouvelleEnchere);
+			
+			// Ancienne mise retournée au précédent enchérisseur
+			if (ancienneEnchere.getAcheteur() != null) {
+				ancienEncherisseur = ancienneEnchere.getAcheteur();
+				ancienEncherisseur.setCredit(ancienEncherisseur.getCredit() + ancienneEnchere.getMontant_enchere());
+				this.utilisateurDAO.updateCredit(ancienEncherisseur.getUtilisateurId(), ancienEncherisseur.getCredit());
+			}
+			
+			// Nouvelle mise déduite du nouvel enchérisseur
+			user.setCredit(user.getCredit() - nouvelleOffre);
+			this.utilisateurDAO.updateCredit(user.getUtilisateurId(), user.getCredit());
+		}
 	}
 }

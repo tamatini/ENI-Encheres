@@ -33,7 +33,7 @@ public class UtilisateurBLL {
 	 * @throws BusinessException
 	 */
 	//TODO envoyer mail de confirmation ?
-	public Utilisateur creerUtilisateur(Utilisateur nouvelUtilisateur, String controle_motDePasse) throws BusinessException {
+	public void creerUtilisateur(Utilisateur nouvelUtilisateur, String controle_motDePasse) throws BusinessException {
 		BusinessException businessException = new BusinessException();
 		
 		if (nouvelUtilisateur.getPseudo() == null || nouvelUtilisateur.getPseudo().isBlank()) {
@@ -91,13 +91,11 @@ public class UtilisateurBLL {
 			businessException.ajouterErreur(CodesResultatBLL.INSERT_USER_PASSWORD_OTHER);
 		}
 		
-		if(businessException.hasErreurs())
-		{
+		if(businessException.hasErreurs()) {
 			throw businessException;
 		} else {
 			this.utilisateurDAO.insert(nouvelUtilisateur);
 		}
-		return nouvelUtilisateur;
 	}
 	
 	/**

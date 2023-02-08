@@ -48,4 +48,8 @@ public abstract class CodesResultatBLL {
 	// CodePostal
 	public static final int CODE_POSTAL_OBLIGATOIRE = 20044;
 	public static final int CODE_POSTAL_LONGUEUR = 20045;
+	
+	/* Erreurs création enchère */
+	public static final int INSERT_BID_AMOUNT_MINI_ERROR = 20050;
+	public static final int INSERT_USER_NOT_ENOUGH_CREDITS = 20051;
 }

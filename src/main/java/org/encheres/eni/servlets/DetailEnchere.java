@@ -54,14 +54,10 @@ public class DetailEnchere extends HttpServlet {
 			// Récupération de la meilleure enchère avec l'article
 			Enchere enchereGagnante = encheresBLL.afficherMeilleureEnchere(articleId);
 			Article articleConsulte = enchereGagnante.getArticle();
-			int miseMax = enchereGagnante.getMontant_enchere();
-			String nomGagnant = null;
-			if (enchereGagnante.getAcheteur() != null) {
-				nomGagnant = enchereGagnante.getAcheteur().getPseudo();
-			}
+			String URLimage = "../Public/Images/pc.jpg"; // TODO ajouter l'url à l'article
 			
-			// TODO ajouter l'url à l'article
-			String URLimage = "../Public/Images/pc.jpg";
+			// Récupération du point retrait correspondant à l'article
+			Retrait retrait = encheresBLL.afficherRetrait(articleId);
 			
 			// Récupération du pseudo du vendeur
 			UtilisateurBLL vendeur = new UtilisateurBLL();
@@ -71,21 +67,15 @@ public class DetailEnchere extends HttpServlet {
 			CategorieBLL categorieArticle = new CategorieBLL();
 			String categorie = categorieArticle.afficherCategorie(articleConsulte.getCategoryId()).getLibelle();
 			
-			
-			// TODO récupérer le point retrait correspondant à l'article
-			Retrait retrait = new Retrait("15478 rue très loin", "75000", "Marseille", 1);
-			
-			/* Modification du format de la date */
+			// Modification du format de la date
 			Date date_fin_enchere = localDateToDate(articleConsulte.getDateFinEncheres());
 			
 			request.setAttribute("titre", articleConsulte.getNomArticle());
-			request.setAttribute("article", articleConsulte);
-			request.setAttribute("image", URLimage);
+			request.setAttribute("enchere", enchereGagnante);
+			request.setAttribute("image", URLimage); // A supprimer une fois la BDD modifiée
 			request.setAttribute("retrait", retrait);
 			request.setAttribute("categorie", categorie);
-			request.setAttribute("nomGagnant", nomGagnant);
 			request.setAttribute("nomVendeur", nomVendeur);
-			request.setAttribute("miseMax", miseMax);
 			request.setAttribute("dateFinEnchere_formatDate", date_fin_enchere);
 			
 			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Encheres/DetailEnchere.jsp");
@@ -106,14 +96,46 @@ public class DetailEnchere extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		EncheresBLL encheresBLL = new EncheresBLL();
+		HttpSession session = request.getSession();
+		Utilisateur user = (Utilisateur) session.getAttribute("user");
 		int idArticle = 0;
+		int nouvelleOffre = 0;
+		
 		try {
+			// Gestion si pas d'utilisateur connecté
+			if (user == null) {
+				NullPointerException npe = new NullPointerException("Vous devez être connecté pour afficher cette page");
+				System.out.println(npe.getMessage());
+				throw npe;
+			}
+			
 			idArticle = Integer.parseInt(request.getParameter("idArticle"));
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+			nouvelleOffre = Integer.parseInt(request.getParameter("nouvelleOffre"));
+			
+			encheresBLL.creerEnchere(idArticle, user, nouvelleOffre);
+			response.sendRedirect(request.getContextPath()+"/encheres/detailEnchere?id=" + idArticle);
+			
+		} catch (NumberFormatException nfe) {
+			// TODO gérer l'affichage des erreurs sur la jsp DetailEnchere
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatServlets.FORMAT_NOUVELLE_OFFRE_ERREUR);
+			request.setAttribute("Liste_codes_erreurs", businessException.getListeCodesErreur());
+			request.setAttribute("idArticle", idArticle);
+			System.out.println("Le montant de la nouvelle offre n'est pas au format numérique");
+			nfe.printStackTrace();
+			doGet(request, response);
+		} catch (NullPointerException npe) {
+			// TODO gérer l'affichage des erreurs sur la page d'accueil
+			System.out.println("Vous avez été déconnecté, veuillez vous identifier");
+			npe.printStackTrace();
+			response.sendRedirect(request.getContextPath()+"/encheres");
+		} catch (BusinessException be) {
+			request.setAttribute("Liste_codes_erreurs", be.getListeCodesErreur());
+			request.setAttribute("idArticle", idArticle);
+			doGet(request, response);
 		}
-		response.sendRedirect(request.getContextPath()+"/encheres/detailEnchere?id=" + idArticle);
 	}
 	
 	/**

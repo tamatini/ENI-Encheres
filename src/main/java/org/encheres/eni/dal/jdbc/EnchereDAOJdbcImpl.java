@@ -15,6 +15,7 @@ import org.encheres.eni.dal.EnchereDAO;
 public class EnchereDAOJdbcImpl implements EnchereDAO {
 	
 	private static final String SQL_SELECT_ALL_BY_IDARTICLE = "SELECT * FROM Encheres WHERE articleId=?";
+	private static final String SQL_INSERT = "INSERT INTO Encheres (vendeurId, articleId, dateEnchere, montantEnchere) VALUES (?,?,?,?)";
 	
 	public List<Enchere> selectAllByArticleId(int id) throws BusinessException {
 		List<Enchere> encheres = new ArrayList<>();
@@ -38,27 +39,42 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 	}
 
 	@Override
-	public void insert(Enchere object) throws BusinessException {
-		// TODO Auto-generated method stub
-		
+	public void insert(Enchere enchere) throws BusinessException {
+		try(Connection cnx = ConnectionProvider.getConnection()) {
+			
+//			// auto commit suspendu le temps d'effectuer toutes les méthodes
+//			cnx.setAutoCommit(false);
+
+			PreparedStatement pstmt = cnx.prepareStatement(SQL_INSERT);
+			pstmt.setInt(1, enchere.getAcheteur().getUtilisateurId());
+			pstmt.setInt(2, enchere.getArticle().getArticleId());
+			pstmt.setObject(3, enchere.getDateEnchere());
+			pstmt.setInt(4, enchere.getMontant_enchere());
+			pstmt.executeUpdate();
+		}
+		catch(SQLException e) {
+//			cnx.rollback();
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.INSERT_BID_ECHEC);
+			throw businessException;
+		}
 	}
 
 	@Override
 	public Enchere selectById(int Id) throws BusinessException {
-		// TODO Auto-generated method stub
+		// no action
 		return null;
 	}
 
 	@Override
 	public void update(Enchere object) throws BusinessException {
-		// TODO Auto-generated method stub
-		
+		// no action
 	}
 
 	@Override
 	public void delete(int id) throws BusinessException {
-		// TODO Auto-generated method stub
-		
+		// no action
 	}
 
 	@Override
