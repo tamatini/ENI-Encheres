@@ -1,24 +1,23 @@
 package org.encheres.eni.servlets;
 
+import java.io.File;
 import java.io.IOException;
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
-import org.apache.tomcat.jni.Local;
 import org.encheres.eni.BusinessException;
 import org.encheres.eni.bll.CategorieBLL;
 import org.encheres.eni.bll.EncheresBLL;
-import org.encheres.eni.bo.Article;
 import org.encheres.eni.bo.Utilisateur;
 
 
@@ -33,6 +32,11 @@ import org.encheres.eni.bo.Utilisateur;
 		"/encheres/nouvelArticle",
 		"/encheres/supprimerArticle"
 	})
+@MultipartConfig(
+		fileSizeThreshold = 1024 * 1024 * 1,
+		maxFileSize = 1024 * 1024 * 10,
+		maxRequestSize = 1024 * 1024 * 100
+	)
 
 public class VenteArticle extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -61,6 +65,20 @@ public class VenteArticle extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// gestion des images
+		// adresse de stockage de l'image
+		String IMAGE_FOLDER = "/Public/Images/tests";
+		String uploadPath = getServletContext().getRealPath(IMAGE_FOLDER); 
+		
+		Part filePart = request.getPart("file");
+		String fileName = filePart.getSubmittedFileName();
+		for (Part part : request.getParts()) {
+			String fullPath = uploadPath + File.separator + fileName;
+			System.out.println(fullPath);
+			part.write("C:\\Projet\\Images" + fileName);
+		}
+		
+		
 		List<Integer> listeCodesErreurs = new ArrayList<>();
 		Utilisateur utilisateur = (Utilisateur) request.getSession().getAttribute("user");
 		String nomArticle, description, rue, ville, codePostal, categorieId, prixInitial;
@@ -87,7 +105,7 @@ public class VenteArticle extends HttpServlet {
 				listeCategories(request, listeCodesErreurs);
 				
 				encheresBLL.creerArticle(nomArticle, description, dateDebutEnchere, dateFinEnchere, prixInitial, 
-						vendeurId, categorieId, rue, ville, codePostal);
+						vendeurId, categorieId, rue, ville, codePostal, fileName);
 				
 			} catch (BusinessException e) {
 				e.printStackTrace();

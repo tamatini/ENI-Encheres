@@ -42,7 +42,7 @@ public class EncheresBLL {
 	 * @throws BusinessException
 	 */
 	public Article creerArticle(String nomArticle, String description, LocalDate dateDebut, LocalDate dateFin, String prixInitial, 
-			int vendeurId, String categoryId, String rue, String ville, String codePostal ) throws BusinessException {
+			int vendeurId, String categoryId, String rue, String ville, String codePostal, String imageURL ) throws BusinessException {
 		BusinessException businessException = new BusinessException();
 		LocalDate dateDebutEnchere = null, dateFinEnchere = null;
 		int vendeur, categorie, prix;
@@ -64,7 +64,7 @@ public class EncheresBLL {
 		this.validerCodePostal(codePostal, businessException);
 		
 		if (!businessException.hasErreurs()) {
-			article = new Article(nomArticle, description, dateDebut, dateFin, prix, prix, vendeur, categorie);
+			article = new Article(nomArticle, description, dateDebut, dateFin, prix, prix, vendeur, categorie, imageURL);
 			this.articleDAO.insert(article);
 			retrait = new Retrait(rue, ville, codePostal, article.getArticleId());
 			this.retraitDAO.insert(retrait);

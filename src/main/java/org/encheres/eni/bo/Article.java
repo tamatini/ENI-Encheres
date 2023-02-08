@@ -16,6 +16,7 @@ public class Article {
 	private int prixVente;
 	private int vendeurId;
 	private int categoryId;
+	private String imageURL;
 	
 	/**
 	 * Constructeur de la classe objet article sans paramètre
@@ -36,7 +37,7 @@ public class Article {
 	 * @param categoryId la catégorie
 	 */
 	public Article(String nomArticle, String description, LocalDate dateDebutEncheres,
-			LocalDate dateFinEncheres, int prixInitial, int prixVente, int vendeurId, int categoryId) {
+			LocalDate dateFinEncheres, int prixInitial, int prixVente, int vendeurId, int categoryId, String imageURL) {
 		super();
 		this.setNomArticle(nomArticle);
 		this.setDescription(description);
@@ -46,6 +47,7 @@ public class Article {
 		this.setPrixVente(prixVente);
 		this.setVendeurId(vendeurId);
 		this.setCategoryId(categoryId);
+		this.setImageURL(imageURL);
 	}
 	
 	/** 
@@ -61,8 +63,8 @@ public class Article {
 	 * @param categoryId la catégorie
 	 */
 	public Article(int articleId, String nomArticle, String description, LocalDate dateDebutEncheres,
-			LocalDate dateFinEncheres, int prixInitial, int prixVente, int vendeurId, int categoryId) {
-		this(nomArticle, description, dateDebutEncheres, dateFinEncheres, prixInitial, prixVente, vendeurId, categoryId);
+			LocalDate dateFinEncheres, int prixInitial, int prixVente, int vendeurId, int categoryId, String imageURL) {
+		this(nomArticle, description, dateDebutEncheres, dateFinEncheres, prixInitial, prixVente, vendeurId, categoryId, imageURL);
 		this.setArticleId(articleId);
 	}
 
@@ -192,6 +194,20 @@ public class Article {
 	 */
 	public void setCategoryId(int categoryId) {
 		this.categoryId = categoryId;
+	}
+	
+	/**
+	 * @param imageURL l'url de l'image
+	 */
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
+	}
+	
+	/**
+	 * @return l'url de l'image
+	 */
+	public String getImageURL() {
+		return imageURL;
 	}
 	
 	/**

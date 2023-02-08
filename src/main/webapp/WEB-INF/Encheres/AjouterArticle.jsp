@@ -11,7 +11,7 @@
 				</ul>		
 			</div>
 		</c:if>
-		<form class="create_form" method="post">
+		<form class="create_form" method="post" enctype="multipart/form-data">
 			<div class="article_form">
 				<div class="article_form_img">
 					<img alt="default" src="../Public/Images/default-image.jpg" >
@@ -38,7 +38,8 @@
 					</div>
 					<div class="form_create_section">
 						<label class="form_label" for="imageArticle">Photo de l'article</label>
-						<input  type="file" value="UPLOADER" name="image" id="imageArticle">
+						<input  type="file" value="UPLOADER" name="file" id="imageArticle">
+						<a href="${ pageContext.request.contextPath }/UploadImage">Upload</a>
 					</div>
 					<div class="form_create_section">
 						<label class="form_label" for="prixInitial">Mise à prix :</label>
@@ -82,6 +83,12 @@
 		function clearMessage() {
 			var msg = document.getElementById("msg");
 			msg.style.display = "none";
+		}
+		
+		function uploadFile() {
+			let formData = new FormData ();
+			formData.append("file", ajaxfile.file[0]);
+			await fetch("UploadImage", {method: "GET", body: formData});
 		}
 	</script>
 <%@ include file="./Partials/Footer.jspf" %>

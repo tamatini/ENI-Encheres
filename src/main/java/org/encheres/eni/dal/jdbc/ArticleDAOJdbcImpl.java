@@ -15,7 +15,7 @@ import org.encheres.eni.dal.DAO;
 // TODO modifier les méthodes une fois que le champ contenant l'URL de l'image sera créé dans la BDD
 
 public class ArticleDAOJdbcImpl implements DAO<Article>{
-	private String INSERT_ARTICLE = "INSERT INTO Articles VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+	private String INSERT_ARTICLE = "INSERT INTO Articles VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String SELECT_BY_ID_ARTICLE = "SELECT * FROM Articles WHERE articleId = ?";
 	
 	
@@ -30,6 +30,7 @@ public class ArticleDAOJdbcImpl implements DAO<Article>{
 			ps.setInt(6,  article.getPrixVente());
 			ps.setInt(7,  article.getVendeurId());
 			ps.setInt(8,  article.getCategoryId());
+			ps.setString(9, article.getImageURL());
 			ps.executeUpdate();
 			ResultSet rs = ps.getGeneratedKeys();
 			if (rs.next()) {
@@ -61,6 +62,7 @@ public class ArticleDAOJdbcImpl implements DAO<Article>{
 				article.setPrixVente(rs.getInt("prixVente"));
 				article.setVendeurId(rs.getInt("vendeurId"));
 				article.setCategoryId(rs.getInt("categorieId"));
+				article.setImageURL(rs.getString("imageURL"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
