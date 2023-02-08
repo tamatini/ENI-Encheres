@@ -17,4 +17,8 @@ public abstract class CodesResultatServlets {
 	public static final Integer MOT_DE_PASSE_OBLIGATOIRE = 30002;
 	public static final Integer MOT_DE_PASSE_ERREUR = 30003;
 
+	/**
+	 * Format saisie numérique incorrect
+	 */
+	public static final int FORMAT_NOUVELLE_OFFRE_ERREUR=30050;
 }

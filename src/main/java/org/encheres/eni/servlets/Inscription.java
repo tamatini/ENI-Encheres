@@ -50,7 +50,6 @@ public class Inscription extends HttpServlet {
 			nouvelUtilisateur.setMotDePasse((String) request.getParameter("motDePasse"));
 			controle_motDePasse = (String) request.getParameter("controle_motDePasse");
 			
-			System.out.println(nouvelUtilisateur.toString());
 			utilisateurBLL.creerUtilisateur(nouvelUtilisateur, controle_motDePasse);
 			
 			request.getSession().setAttribute("user", nouvelUtilisateur);
