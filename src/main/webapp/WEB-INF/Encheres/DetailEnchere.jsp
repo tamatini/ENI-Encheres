@@ -11,7 +11,7 @@
   
   <section class="container flex_cards">
     <div>
-      <img class="auction_image" src="${image}" alt="${article.nomArticle}">
+      <img class="auction_image" src="../Public/Images/Articles/${article.imageURL}" alt="${article.nomArticle}">
     </div>
     <div class="auction_description">
       <div>

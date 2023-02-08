@@ -15,7 +15,7 @@ import org.encheres.eni.dal.EnchereDAO;
 public class EnchereDAOJdbcImpl implements EnchereDAO {
 	
 	private static final String SQL_SELECT_ALL_BY_IDARTICLE = "SELECT * FROM Encheres WHERE articleId=?";
-	private static final String SQL_INSERT = "INSERT INTO Encheres (vendeurId, articleId, dateEnchere, montantEnchere) VALUES (?,?,?,?)";
+	private static final String SQL_INSERT = "INSERT INTO Encheres (acheteurId, articleId, dateEnchere, montantEnchere) VALUES (?,?,?,?)";
 	
 	public List<Enchere> selectAllByArticleId(int id) throws BusinessException {
 		List<Enchere> encheres = new ArrayList<>();
@@ -26,9 +26,8 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 			pstmt.setInt(1, id);
 			ResultSet rs = pstmt.executeQuery();
 			
-			// Traitement du résultat (TODO vendeurId correspond à l'acheteur)
 			while (rs.next()) {
-				encheres.add(new Enchere(acheteur.selectById(rs.getInt("vendeurId")), article.selectById(id), rs.getDate("dateEnchere").toLocalDate(), rs.getInt("montantEnchere")));
+				encheres.add(new Enchere(acheteur.selectById(rs.getInt("acheteurId")), article.selectById(id), rs.getDate("dateEnchere").toLocalDate(), rs.getInt("montantEnchere")));
 			}
 		} catch(SQLException e) {
 			BusinessException businessException = new BusinessException();

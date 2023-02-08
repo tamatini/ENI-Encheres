@@ -34,20 +34,25 @@ public class DetailEnchere extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-				
+		Utilisateur user = (Utilisateur) session.getAttribute("user");
+		UtilisateurBLL utilisateurBLL = new UtilisateurBLL();
+		
 		// TODO rediriger vers la page de modification de la vente si l'utilisateur connecté est le détenteur de l'article
 		// et si la date de début d'enchère n'est pas passée
 		
 		try {
 			
 			// Gestion si pas d'utilisateur connecté
-			if (session == null) {
+			if (user == null) {
 				NullPointerException npe = new NullPointerException("Vous devez être connecté pour afficher cette page");
 				System.out.println(npe.getMessage());
 				throw npe;
 			}
-//			Utilisateur user = (Utilisateur) session.getAttribute("user");
 			EncheresBLL encheresBLL = new EncheresBLL();
+			
+			int userId = user.getUtilisateurId();
+			user = utilisateurBLL.afficherProfil(userId);
+			request.setAttribute("user", user);
 			
 			int articleId = Integer.parseInt(request.getParameter("id")); // Peut lever une NumberFormatException redirigée vers 404
 	
