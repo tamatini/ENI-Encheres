@@ -14,7 +14,7 @@
 		<form class="create_form" method="post" enctype="multipart/form-data">
 			<div class="article_form">
 				<div class="article_form_img">
-					<img alt="default" src="../Public/Images/default-image.jpg" >
+					<img alt="default" src="${ pageContext.request.contextPath }/Public/Images/default.jpg" id="previewImage">
 				</div>
 				<div class="article_form_input_section">
 					<div class="form_create_section">
@@ -23,7 +23,7 @@
 					</div>
 					<div class="form_create_section">
 						<label class="form_label">Description :</label>
-						<textarea name="description" id="description"  class="form_input" rows="" cols=""></textarea>
+						<textarea name="description" id="description"  class="form_input"></textarea>
 					</div>
 					<div class="form_create_section">
 						<label class="form_label">Catégorie</label>
@@ -38,8 +38,7 @@
 					</div>
 					<div class="form_create_section">
 						<label class="form_label" for="imageArticle">Photo de l'article</label>
-						<input  type="file" value="UPLOADER" name="file" id="imageArticle">
-						<a href="${ pageContext.request.contextPath }/UploadImage">Upload</a>
+						<input onchange="loadImage(this)"  type="file" value="UPLOADER" name="file" id="imageArticle" accept="image/*">
 					</div>
 					<div class="form_create_section">
 						<label class="form_label" for="prixInitial">Mise à prix :</label>
@@ -83,12 +82,6 @@
 		function clearMessage() {
 			var msg = document.getElementById("msg");
 			msg.style.display = "none";
-		}
-		
-		function uploadFile() {
-			let formData = new FormData ();
-			formData.append("file", ajaxfile.file[0]);
-			await fetch("UploadImage", {method: "GET", body: formData});
 		}
 	</script>
 <%@ include file="./Partials/Footer.jspf" %>

@@ -32,7 +32,7 @@
 	            <c:choose>
 	              <c:when test="${user != null}">
 	                <h3 class="card_text_title">
-	                  <a href="${pageContext.request.contextPath }/encheres/detailEnchere?id=${article.articleId}">PC Gamer</a>
+	                  <a href="${pageContext.request.contextPath }/encheres/detailEnchere?id=${article.articleId}">${ article.nomArticle }</a>
 	                </h3>
 	              </c:when>
 	              <c:otherwise>

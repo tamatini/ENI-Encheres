@@ -28,7 +28,6 @@ public class Encheres extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Integer> listeCodesErreurs = new ArrayList<>();
-		HttpSession session = request.getSession();
 		EncheresBLL encheresBLL = new EncheresBLL();
 		CategorieBLL categorieBLL = new CategorieBLL();
 		
@@ -38,7 +37,6 @@ public class Encheres extends HttpServlet {
 			try {
 				request.setAttribute("titre", "Accueil");
 				request.setAttribute("articles", encheresBLL.listeEnchere());
-				request.setAttribute("utilisateur", session.getAttribute("utilisateur"));
 				request.setAttribute("categories", categorieBLL.listeCategorie());
 			} catch (BusinessException e) {
 				e.printStackTrace();

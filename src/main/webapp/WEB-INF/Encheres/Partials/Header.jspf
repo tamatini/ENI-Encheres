@@ -8,9 +8,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="./Public/Styles/main.css">
-<link rel="stylesheet" href="../Public/Styles/main.css">
-<link rel="icon" href="../Public/Images/apahere_auction_logo.ico">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link rel="stylesheet" href="${ pageContext.request.contextPath }/Public/Styles/main.css">
+<link rel="icon" href="${ pageContext.request.contextPath }/Public/Images/apahere_auction_logo.ico">
 <title>ENI-Enchères - ${ titre }</title>
 </head>
 <body>

@@ -67,7 +67,7 @@ public class VenteArticle extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// gestion des images
 		// adresse de stockage de l'image
-		String IMAGE_FOLDER = "/Public/Images/tests";
+		String IMAGE_FOLDER = "/Public/Images/Articles";
 		String uploadPath = getServletContext().getRealPath(IMAGE_FOLDER);
 		String fileName = "";
 		

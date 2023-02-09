@@ -3,6 +3,7 @@
 			<a>Eni Ecole informatique &copy</a> - <a>Groupe Apahere</a>
 		</div>
 	</footer>
-
+	<script type="text/javascript" src="${ pageContext.request.contextPath }/Public/Scripts/Scripts.js">
+</script>
 </body>
 </html>
