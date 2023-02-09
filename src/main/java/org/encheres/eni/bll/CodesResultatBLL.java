@@ -52,4 +52,6 @@ public abstract class CodesResultatBLL {
 	/* Erreurs création enchère */
 	public static final int INSERT_BID_AMOUNT_MINI_ERROR = 20050;
 	public static final int INSERT_USER_NOT_ENOUGH_CREDITS = 20051;
+	public static final int INSERT_BID_AMOUNT_BEGIN_DATE_ERROR = 20052;
+	public static final int INSERT_BID_AMOUNT_END_DATE_ERROR = 20053;
 }

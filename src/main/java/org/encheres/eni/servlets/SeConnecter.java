@@ -74,7 +74,7 @@ public class SeConnecter extends HttpServlet {
 			} catch (BusinessException e) {
 				e.printStackTrace();
 				request.setAttribute("listeCodesErreurs", e.getListeCodesErreur());
-				rq.forward(request, response);
+				doGet(request, response);
 			}
 		}
 	}

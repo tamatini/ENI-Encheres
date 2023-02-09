@@ -14,13 +14,15 @@ import org.encheres.eni.bo.Utilisateur;
 import org.encheres.eni.dal.CodesResultatDAL;
 import org.encheres.eni.dal.DAO;
 import org.encheres.eni.dal.DAOFactory;
+import org.encheres.eni.dal.ArticleDAO;
 
 // TODO modifier les méthodes une fois que le champ contenant l'URL de l'image sera créé dans la BDD
 
-public class ArticleDAOJdbcImpl implements DAO<Article>{
+public class ArticleDAOJdbcImpl implements DAO<Article> {
 	private static final String INSERT_ARTICLE = "INSERT INTO Articles VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String SELECT_BY_ID_ARTICLE = "SELECT * FROM Articles WHERE articleId = ?";
 	private static final String SELECT_ALL = "SELECT * FROM ARTICLES";
+	private static final String SELECT_ALL_BY_NAME = "SELECT * FROM ARTICLES WHERE nomArticle=?, categoriesId=?";
 	
 	
 	@Override
@@ -121,4 +123,5 @@ public class ArticleDAOJdbcImpl implements DAO<Article>{
 		}
 		return articles;
 	}
+
 }

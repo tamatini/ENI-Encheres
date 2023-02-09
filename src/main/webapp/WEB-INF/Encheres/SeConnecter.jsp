@@ -17,8 +17,8 @@
          <h2>ME CONNECTER</h2>
        </div>
        <div class="connect_input">
-         <input class="form_input" type="text" placeholder="Identifiant" name="pseudo" id="pseudo" >
-         <input class="form_input" type="password" placeholder="Mot de passe" name="motDePasse" id="motDePasse" >
+         <input class="form_input" type="text" placeholder="Identifiant" name="pseudo" id="pseudo" required>
+         <input class="form_input" type="password" placeholder="Mot de passe" name="motDePasse" id="motDePasse" required>
        </div>
        <div>
          <input type="checkbox" name="rememberme" id="rememberme">

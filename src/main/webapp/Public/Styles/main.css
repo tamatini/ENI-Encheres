@@ -71,6 +71,11 @@ header {
   margin: auto;
 }
 
+.vente  {
+	background: white;
+	height: 100%;	
+}
+
 .logo {
 	display: flex;
 	align-items: center;
@@ -417,13 +422,15 @@ footer div a {
 }
 
 .white_title {
-  padding: 2rem;
+
+  padding: 4rem 2rem 2rem;
   font-size: 2em;
   text-align: center;
-  color: white;
+  color: #272a36;
 }
 
 .flex_cards {
+  padding-top: 8rem;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -433,14 +440,11 @@ footer div a {
 .auction_image {
   margin-right: 2em;
   object-fit: cover;
-  width: 240px;
-  height: 260px;
+  width: 20rem;
+  height: 20rem;
   border-right: .1em solid #00183827;
 }
 
-.auction_description {
-  color: #e9e9e9;
-}
 
 .auction_description h2 {
   margin-bottom: 1em;
@@ -577,7 +581,26 @@ footer div a {
 }
 
 @media only screen and (max-width: 640px) {
+	.create_form {
+		padding: 1rem;
+		margin-bottom: 2rem;
+	}
 	
+	.article_new_form {
+		width: 100%;
+		height: 100%;
+		border-radius: 0;
+		margin-top: 0;
+		padding: 0;
+	}
+	
+	.article_form {
+		flex-direction: column;
+	}
+	
+	.article_form .article_form_img {
+		width: 100%;
+	}
 	
 	.nav {
 		width: 100%;
@@ -668,5 +691,24 @@ footer div a {
 	.navbar ul li .nav_link:hover {
 		color: white;
 		background: transparent;
+	}
+	
+	.flex_cards {
+		display: block;
+		padding-top: 1rem;
+	}
+	
+	.auction_image {
+		width: 100%;
+		margin-bottom: .8rem;
+	}
+	
+	.auction_description {
+		padding: 1rem;
+	}
+	
+	.image_container {
+		width: 100%;
+		overflow: hidden;
 	}
 }

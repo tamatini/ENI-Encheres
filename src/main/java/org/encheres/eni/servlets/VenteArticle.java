@@ -65,6 +65,7 @@ public class VenteArticle extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		// gestion des images
 		// adresse de stockage de l'image
 		String IMAGE_FOLDER = "/Public/Images/Articles";
