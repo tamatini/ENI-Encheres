@@ -74,7 +74,7 @@ public class EncheresBLL {
 		this.validerCodePostal(codePostal, businessException);
 		
 		if (!businessException.hasErreurs()) {
-			article = new Article(nomArticle, description, dateDebut, dateFin, prix, prix, vendeur, categorie, imageURL);
+			article = new Article(nomArticle, description, dateDebut, dateFin, prix, 0, vendeur, categorie, imageURL);
 			this.articleDAO.insert(article);
 			retrait = new Retrait(rue, ville, codePostal, article.getArticleId());
 			this.retraitDAO.insert(retrait);
