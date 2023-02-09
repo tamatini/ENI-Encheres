@@ -1,4 +1,4 @@
-// TODO quand toutes les données de l'uitilisateur temporaire sont ok, les tranferer dans le user. 
+// TODO Factoriser le code en doublons dans les méthodes créer et modifier utilisateurs.
 
 
 package org.encheres.eni.servlets;
@@ -47,7 +47,7 @@ public class ModifierProfil extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		UtilisateurBLL utilisateurBLL = new UtilisateurBLL(); //
+		UtilisateurBLL utilisateurBLL = new UtilisateurBLL(); 
 		HttpSession session = request.getSession(false); //
 		
 		if(session != null) {

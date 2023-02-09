@@ -1,7 +1,3 @@
-<!-- 
-TODO bonton modifier doit s'afficher quand c'est le user est connecté
- -->
-
 <%@ include file="./Partials/Header.jspf" %>
 <link rel="stylesheet" href="../Public/Styles/main.css">
 <div class="container">
@@ -36,16 +32,15 @@ TODO bonton modifier doit s'afficher quand c'est le user est connecté
 		</tr>
 		<tr>
 	      <td>Ville : </td>
-	      <td>${ utilisateur.ville }</td>
+	      <td>${ utilisateur.ville }</td> <!--  expressions language pour afficher les variables -->
 		</tr> 
-		<c:if test="${ utilisateur.utilisateurId == user.utilisateurId }">    
+		<c:if test="${ utilisateur.utilisateurId == user.utilisateurId }"> <!-- balise JSTL si l'utilsateur ouvre son profil il voit ses crédits  --> 
 			<tr>
 		      <td>Crédit : </td>
 		      <td>${ utilisateur.credit }</td>
 			</tr> 
 		</c:if>  
 	</table>
-	
 	<c:if test="${ utilisateur.utilisateurId == user.utilisateurId }"> 
 		<div class = "container bouton_profil">
 			<a class="form_button" href="${pageContext.request.contextPath}/encheres/ModifierProfil?id=${user.utilisateurId}">Modifier</a>	

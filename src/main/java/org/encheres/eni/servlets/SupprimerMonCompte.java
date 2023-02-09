@@ -35,11 +35,10 @@ public class SupprimerMonCompte extends HttpServlet {
 				session.invalidate();
 				response.sendRedirect(request.getContextPath() + "/encheres");
 			} catch (BusinessException e) {
+				// TODO Gérer l'expression lorsqu'un utilisateur a créé des articles
 				request.setAttribute("Liste_codes_erreurs", e.getListeCodesErreur());
-				doGet(request, response);
+				response.sendRedirect(request.getContextPath()+"/encheres");
 			}
 		}
-		
-		
 	}
 }
