@@ -1,13 +1,13 @@
 <%@ include file="./Partials/Header.jspf" %>
 
   <section class="container-fluid main_section">
-    <form method="post" action="${ pageContext.request.contextPath }/encheres/Recherche" class="search_bar">
+    <form action="" class="search_bar">
       <div class="form_search_section">
         <input class="form_input" type="text" name="rechercher" id="rechercher" placeholder="Chercher un article">
       </div>
       <div class="form_select_section">
         <label class="form_label" for="selection_category">Catégorie : </label>
-        <Select class="form_input" name="categorie">
+        <Select class="form_input" name="selection_category">
         	<option value = "">Toutes</option>
           <c:forEach items="${ categories }" var="categorie">
           	<option value="${ categorie.categorieId }">${ categorie.libelle }</option>

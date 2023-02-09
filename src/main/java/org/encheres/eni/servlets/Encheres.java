@@ -27,6 +27,7 @@ public class Encheres extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		List<Integer> listeCodesErreurs = new ArrayList<>();
 		EncheresBLL encheresBLL = new EncheresBLL();
 		CategorieBLL categorieBLL = new CategorieBLL();
@@ -46,4 +47,6 @@ public class Encheres extends HttpServlet {
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Encheres/Encheres.jsp");
 		rd.forward(request, response);
 	}
+	
+	
 }

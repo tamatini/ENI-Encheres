@@ -17,7 +17,6 @@ import org.encheres.eni.BusinessException;
 import org.encheres.eni.bll.CategorieBLL;
 import org.encheres.eni.bll.EncheresBLL;
 import org.encheres.eni.bll.UtilisateurBLL;
-import org.encheres.eni.bo.Article;
 import org.encheres.eni.bo.Enchere;
 import org.encheres.eni.bo.Retrait;
 import org.encheres.eni.bo.Utilisateur;
@@ -35,61 +34,63 @@ public class DetailEnchere extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		Utilisateur user = (Utilisateur) session.getAttribute("user");
-		UtilisateurBLL utilisateurBLL = new UtilisateurBLL();
 		
 		// TODO rediriger vers la page de modification de la vente si l'utilisateur connecté est le détenteur de l'article
 		// et si la date de début d'enchère n'est pas passée
 		
 		try {
-			
 			// Gestion si pas d'utilisateur connecté
 			if (user == null) {
 				NullPointerException npe = new NullPointerException("Vous devez être connecté pour afficher cette page");
-				System.out.println(npe.getMessage());
+				System.err.println(npe.getMessage());
 				throw npe;
 			}
 			EncheresBLL encheresBLL = new EncheresBLL();
+			UtilisateurBLL utilisateurBLL = new UtilisateurBLL();
 			
+			// Actualisation du profil de l'utilisateur courant avec les données de la BDD
 			int userId = user.getUtilisateurId();
 			user = utilisateurBLL.afficherProfil(userId);
 			request.setAttribute("user", user);
 			
 			int articleId = Integer.parseInt(request.getParameter("id")); // Peut lever une NumberFormatException redirigée vers 404
 	
-			// Récupération de la meilleure enchère avec l'article
-			Enchere enchereGagnante = encheresBLL.afficherMeilleureEnchere(articleId);
-			Article articleConsulte = enchereGagnante.getArticle();
-			String URLimage = "../Public/Images/pc.jpg"; // TODO ajouter l'url à l'article
+			// Affichage de la derniere enchère et du titre de la page
+			Enchere derniereEnchere = encheresBLL.afficherMeilleureEnchere(articleId);
+			request.setAttribute("enchere", derniereEnchere);
+			request.setAttribute("titre", derniereEnchere.getArticle().getNomArticle());
 			
-			// Récupération du point retrait correspondant à l'article
+			// Affichage du point retrait
 			Retrait retrait = encheresBLL.afficherRetrait(articleId);
-			
-			// Récupération du pseudo du vendeur
-			UtilisateurBLL vendeur = new UtilisateurBLL();
-			String nomVendeur = vendeur.afficherProfil(articleConsulte.getVendeurId()).getPseudo();
-			
-			// Récupération du libellé de la catégorie
-			CategorieBLL categorieArticle = new CategorieBLL();
-			String categorie = categorieArticle.afficherCategorie(articleConsulte.getCategoryId()).getLibelle();
-			
-			// Modification du format de la date
-			Date date_fin_enchere = localDateToDate(articleConsulte.getDateFinEncheres());
-			
-			request.setAttribute("titre", articleConsulte.getNomArticle());
-			request.setAttribute("enchere", enchereGagnante);
-			request.setAttribute("image", URLimage); // A supprimer une fois la BDD modifiée
 			request.setAttribute("retrait", retrait);
-			request.setAttribute("categorie", categorie);
+			
+			// Affichage du pseudo du vendeur
+			UtilisateurBLL vendeur = new UtilisateurBLL();
+			String nomVendeur = vendeur.afficherProfil(derniereEnchere.getArticle().getVendeurId()).getPseudo();
 			request.setAttribute("nomVendeur", nomVendeur);
-			request.setAttribute("dateFinEnchere_formatDate", date_fin_enchere);
+			
+			// Affichage du libellé de la catégorie
+			CategorieBLL categorieArticle = new CategorieBLL();
+			String categorie = categorieArticle.afficherCategorie(derniereEnchere.getArticle().getCategoryId()).getLibelle();
+			request.setAttribute("categorie", categorie);
+			
+			// Affichage des dates
+			Date debut_enchere = localDateToDate(derniereEnchere.getArticle().getDateDebutEncheres());
+			request.setAttribute("dateDebutEnchere", debut_enchere);
+			Date date_fin_enchere = localDateToDate(derniereEnchere.getArticle().getDateFinEncheres());
+			request.setAttribute("dateFinEnchere", date_fin_enchere);
+			Date date_aujourdhui = localDateToDate(LocalDate.now());
+			request.setAttribute("dateAujourdhui", date_aujourdhui);
 			
 			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Encheres/DetailEnchere.jsp");
 			rd.forward(request, response);
 		
-		} catch (NumberFormatException | NullPointerException ne) {
-			// TODO créer une page 404 personnalisée qui affiche la liste des erreurs
-			ne.printStackTrace();
+		} catch (NumberFormatException nfe) {
+			nfe.printStackTrace();
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+		} catch (NullPointerException npe) {
+			npe.printStackTrace();
+			response.sendRedirect(request.getContextPath()+"/encheres");
 		} catch (BusinessException be) {
 			be.printStackTrace();
 		} catch (Exception e) {
@@ -104,40 +105,30 @@ public class DetailEnchere extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		EncheresBLL encheresBLL = new EncheresBLL();
 		HttpSession session = request.getSession();
-		int articleId = 0;
 		
 		try {
-			// Gestion si pas d'utilisateur connecté
+			// Gestion si pas d'utilisateur connecté TODO à tester
 			if (session == null) {
 				NullPointerException npe = new NullPointerException("Vous devez être connecté pour afficher cette page");
 				throw npe;
 			}
 			Utilisateur user = (Utilisateur) session.getAttribute("user");
 			int userId = user.getUtilisateurId();
-			int nouvelleOffre = 0;
 			
-			articleId = Integer.parseInt(request.getParameter("articleId"));
-			nouvelleOffre = Integer.parseInt(request.getParameter("nouvelleOffre"));
+			int articleId = Integer.parseInt(request.getParameter("id"));
+			int nouvelleOffre = Integer.parseInt(request.getParameter("nouvelleOffre"));
 			
 			encheresBLL.creerEnchere(articleId, userId, nouvelleOffre);
+			
 			response.sendRedirect(request.getContextPath()+"/encheres/detailEnchere?id=" + articleId);
 			
 		} catch (NumberFormatException nfe) {
-			// TODO gérer l'affichage des erreurs sur la jsp DetailEnchere
-			BusinessException businessException = new BusinessException();
-			businessException.ajouterErreur(CodesResultatServlets.FORMAT_NOUVELLE_OFFRE_ERREUR);
-			request.setAttribute("Liste_codes_erreurs", businessException.getListeCodesErreur());
-			request.setAttribute("id", articleId);
-			nfe.printStackTrace();
-			doGet(request, response);
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 		} catch (NullPointerException npe) {
-			// TODO gérer l'affichage des erreurs sur la page d'accueil
-			System.err.println("Vous avez été déconnecté, veuillez vous identifier");
-			npe.printStackTrace();
 			response.sendRedirect(request.getContextPath()+"/encheres");
 		} catch (BusinessException be) {
 			request.setAttribute("Liste_codes_erreurs", be.getListeCodesErreur());
-			request.setAttribute("id", articleId);
+			request.setAttribute("id", Integer.parseInt(request.getParameter("id")));
 			doGet(request, response);
 		}
 	}

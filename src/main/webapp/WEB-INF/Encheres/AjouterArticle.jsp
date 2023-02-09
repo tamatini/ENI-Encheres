@@ -59,15 +59,15 @@
 					<legend class="form_label">Retrait</legend>
 					<div>
 						<label class="form_label" for="rue">Rue :</label>
-						<input class="form_input" type="text" name="rue" id="rue" value=${ user.rue }>
+						<input class="form_input" type="text" name="rue" id="rue" value="${ user.rue }">
 					</div>
 					<div>
 						<label class="form_label" for="codePostal">Code postal :</label>
-						<input class="form_input" type="text" name="codePostal" id="codePostal" value=${ user.codePostal }>
+						<input class="form_input" type="text" name="codePostal" id="codePostal" value="${ user.codePostal }">
 					</div>
 					<div>
 						<label class="form_label" for="ville">Ville :</label>
-						<input class="form_input" type="text" name="ville" id="ville" value=${ user.ville }>
+						<input class="form_input" type="text" name="ville" id="ville" value="${ user.ville }">
 					</div>
 				</fieldset>
 				<div class="article_form_buttons">

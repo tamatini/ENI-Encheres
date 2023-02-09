@@ -43,7 +43,7 @@ TODO revoir le completion du champs email qui est reste vide
             <input class="form_input" name="controle_motDePasse" type="password" placeholder="Confirmer mot de passe" minlength="8" maxlength="30" >
           </div >
           <div class="form_create_section">
-          	<p>Crédit : ${ utilisateur.credit }</p>
+	      	<p>Crédit : ${ utilisateur.credit }</p>
           </div>
           
         </div>

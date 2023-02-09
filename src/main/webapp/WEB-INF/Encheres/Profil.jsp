@@ -37,16 +37,19 @@ TODO bonton modifier doit s'afficher quand c'est le user est connecté
 		<tr>
 	      <td>Ville : </td>
 	      <td>${ utilisateur.ville }</td>
-		</tr>    
+		</tr> 
+		<c:if test="${ utilisateur.utilisateurId == user.utilisateurId }">    
+			<tr>
+		      <td>Crédit : </td>
+		      <td>${ utilisateur.credit }</td>
+			</tr> 
+		</c:if>  
 	</table>
-		<a class="form_button" href="${pageContext.request.contextPath}/encheres/ModifierProfil?id=${user.utilisateurId}">Modifier</a>	
 	
-<!--<div>
-	<c:if test="{ utilisateur.utilisatuerId == user.utilisateurId }">	
+	<c:if test="${ utilisateur.utilisateurId == user.utilisateurId }"> 
+		<div class = "container bouton_profil">
+			<a class="form_button" href="${pageContext.request.contextPath}/encheres/ModifierProfil?id=${user.utilisateurId}">Modifier</a>	
+		</div>
 	</c:if>
-</div>-->	
-	
-
-
 </div>
 <%@ include file="./Partials/Footer.jspf" %>

@@ -34,7 +34,6 @@ public class Profil extends HttpServlet {
 				Utilisateur utilisateur = utilisateurBLL.afficherProfil(utilisateurId);
 				request.setAttribute("titre", "Profil de " + utilisateur.getPseudo());
 				if(utilisateur.getUtilisateurId() != 0) {
-					System.out.println(utilisateur.getUtilisateurId());
 					request.setAttribute("utilisateur", utilisateur);
 					rq.forward(request, response);	
 				}

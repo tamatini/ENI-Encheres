@@ -3,15 +3,32 @@
 <%@ include file="./Partials/Header.jspf" %>
 
 <main class="darkblue_main">
+<div class="vente">
   <section>
     <div>
-      <h1 class="white_title">Détail vente</h1>
+      <c:choose>
+        <c:when test="${dateAujourdhui < dateDebutEnchere}">
+         <h1 class="white_title">L'enchère n'a pas encore commencée</h1>
+        </c:when>
+        <c:when test="${dateAujourdhui >= dateFinEnchere && empty enchere.acheteur}">
+         <h1 class="white_title">L'enchère est terminée</h1>
+        </c:when>
+        <c:when test="${dateAujourdhui >= dateFinEnchere && user.utilisateurId == enchere.acheteur.utilisateurId}">
+         <h1 class="white_title">Vous avez remporté la vente</h1>
+        </c:when>
+        <c:when test="${dateAujourdhui >= dateFinEnchere && user.utilisateurId != enchere.acheteur.utilisateurId}">
+         <h1 class="white_title">${enchere.acheteur.pseudo} a remporté l'enchère</h1>
+        </c:when>
+        <c:otherwise>
+         <h1 class="white_title">Détail vente</h1>
+        </c:otherwise>
+      </c:choose>
     </div>
   </section>
-  
+
   <section class="container flex_cards">
-    <div>
-      <img class="auction_image" src="../Public/Images/Articles/${article.imageURL}" alt="${article.nomArticle}">
+    <div class="image_container">
+      <img class="auction_image" src="${pageContext.request.contextPath}/Public/Images/Articles/${enchere.article.imageURL}" alt="${enchere.article.nomArticle}">
     </div>
     <div class="auction_description">
       <div>
@@ -39,7 +56,7 @@
         <tr>
           <td class="auction_table_titles">Fin de l'enchère :</td>
           <td>
-            <fmt:formatDate value="${dateFinEnchere_formatDate}" dateStyle="short"/>
+            <fmt:formatDate value="${dateFinEnchere}" dateStyle="short"/>
           </td>
         </tr>
         <tr>
@@ -54,13 +71,21 @@
           <td>${nomVendeur}</td>
         </tr>
         <c:choose>
-          <c:when test="${user.utilisateurId != enchere.article.vendeurId && user.credit > enchere.montant_enchere}">
+          <c:when test="${user.utilisateurId != enchere.article.vendeurId &&
+                          user.credit + (user.utilisateurId == enchere.acheteur.utilisateurId ? enchere.montant_enchere : 0) > enchere.montant_enchere &&
+                          dateAujourdhui < dateFinEnchere &&
+                          dateAujourdhui >= dateDebutEnchere}">
     	    <tr>
     	      <td class="auction_table_titles">Ma proposition :</td>
     	      <td>
     	        <form method="POST" action="${pageContext.request.contextPath}/encheres/detailEnchere">
-    	          <input class="form_input_light" name="nouvelleOffre" type="number" min="${enchere.montant_enchere + 1}" max="${user.credit}" value="${enchere.montant_enchere + 10}">
-    	          <button class="form_button_light" type="submit" name="articleId" value="${enchere.article.articleId}">Enchérir</button>
+    	          <input class="form_input_light"
+                          name="nouvelleOffre"
+                          type="number"
+                          min="${enchere.montant_enchere + 1}"
+                          max="${user.credit + (user.utilisateurId == enchere.acheteur.utilisateurId ? enchere.montant_enchere : 0)}"
+                          value="${enchere.montant_enchere + 10}">
+    	          <button class="form_button_light" type="submit" name="id" value="${enchere.article.articleId}">Enchérir</button>
     	        </form>
     	      </td>
     	    </tr>    
@@ -72,8 +97,13 @@
           </c:when>
           <c:otherwise></c:otherwise>
         </c:choose>
-        
       </table>
+    </div>
+  </section>
+    <div class="container flex_cards">
+      <c:if test="${dateAujourdhui >= dateFinEnchere && user.utilisateurId == enchere.article.vendeurId && enchere.article.prixVente == 0}">
+        <button class="form_button_light" name="id" value="${enchere}">Récupérer les crédits de la vente</button>
+      </c:if>
       
       <!-- TODO : mettre en forme les messages d'erreur -->
       <c:if test="${! empty Liste_codes_erreurs}">
@@ -84,15 +114,8 @@
           </c:forEach>
         </ul>
       </c:if>
-      
     </div>
-  </section>
-  
-  <!--<div>
-  	<c:if test="${ utilisateur.utilisatuerId == user.utilisateurId }">	
-  		<a class="form_button" href="/encheres/profil">Modifier</a>	
-  	</c:if>
-  </div>-->	
-	
+
+</div>	
 </main>
 <%@ include file="./Partials/Footer.jspf" %>

@@ -74,7 +74,7 @@ public class EncheresBLL {
 		this.validerCodePostal(codePostal, businessException);
 		
 		if (!businessException.hasErreurs()) {
-			article = new Article(nomArticle, description, dateDebut, dateFin, prix, prix, vendeur, categorie, imageURL);
+			article = new Article(nomArticle, description, dateDebut, dateFin, prix, 0, vendeur, categorie, imageURL);
 			this.articleDAO.insert(article);
 			retrait = new Retrait(rue, ville, codePostal, article.getArticleId());
 			this.retraitDAO.insert(retrait);
@@ -343,18 +343,22 @@ public class EncheresBLL {
 		Utilisateur nouvelEncherisseur = new Utilisateur();
 		nouvelEncherisseur = utilisateurDAO.selectById(userId);
 		
-		//Mode debug
-		System.out.println("Ancienne enchère : " + ancienneEnchere);
-		System.out.println("Nouvelle enchère : " + nouvelleEnchere);
-		System.out.println("Précédent enchérisseur : " + ancienneEnchere.getAcheteur());
-		System.out.println("Nouvel enchérisseur : " + userId + " : " + nouvelEncherisseur);
-		
 		/* Vérifications logique métier */
 		if (nouvelleOffre <= ancienneEnchere.getMontant_enchere()) {
 			businessException.ajouterErreur(CodesResultatBLL.INSERT_BID_AMOUNT_MINI_ERROR);
 		}
-		if (nouvelleOffre > nouvelEncherisseur.getCredit()) {
+		if (ancienneEnchere.getAcheteur() != null && ancienneEnchere.getAcheteur().getUtilisateurId() == userId) {
+			if (nouvelleOffre > nouvelEncherisseur.getCredit() + ancienneEnchere.getMontant_enchere()) {
+				businessException.ajouterErreur(CodesResultatBLL.INSERT_USER_NOT_ENOUGH_CREDITS);
+			}
+		} else if (nouvelleOffre > nouvelEncherisseur.getCredit()) {
 			businessException.ajouterErreur(CodesResultatBLL.INSERT_USER_NOT_ENOUGH_CREDITS);
+		}
+		if (LocalDate.now().isBefore(ancienneEnchere.getArticle().getDateDebutEncheres())) {
+			businessException.ajouterErreur(CodesResultatBLL.INSERT_BID_AMOUNT_BEGIN_DATE_ERROR);
+		}
+		if (LocalDate.now().isAfter(ancienneEnchere.getArticle().getDateFinEncheres())) {
+			businessException.ajouterErreur(CodesResultatBLL.INSERT_BID_AMOUNT_END_DATE_ERROR);
 		}
 		
 		if(businessException.hasErreurs()) {
@@ -376,7 +380,11 @@ public class EncheresBLL {
 			}
 			
 			// Nouvelle mise déduite du nouvel enchérisseur
-			nouvelEncherisseur.setCredit(nouvelEncherisseur.getCredit() - nouvelleOffre);
+			if (ancienneEnchere.getAcheteur().getUtilisateurId() == userId) {
+				nouvelEncherisseur.setCredit(nouvelEncherisseur.getCredit() + ancienneEnchere.getMontant_enchere() - nouvelleOffre);
+			} else {
+				nouvelEncherisseur.setCredit(nouvelEncherisseur.getCredit() - nouvelleOffre);
+			}
 			this.utilisateurDAO.updateCredit(userId, nouvelEncherisseur.getCredit());
 		}
 	}
