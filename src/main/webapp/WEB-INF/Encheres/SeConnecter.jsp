@@ -31,7 +31,7 @@
          <button type="submit" class="form_button">Connexion</button>
        </div>
        <div class="connect_input">
-         <a href="#" class="form_button no_account">Créer un compte</a>
+         <a href="${ pageContext.request.contextPath }" class="form_button no_account">Créer un compte</a>
        </div>
      </form>
     </div>

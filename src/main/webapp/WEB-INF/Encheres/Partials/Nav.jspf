@@ -7,7 +7,7 @@
       	<c:when test="${ sessionScope.user != null }">
       	<ul>
      		<li><a class="nav_link" href="${ pageContext.request.contextPath }/encheres/profil?id=${ user.utilisateurId }">Mon Profil</a></li>
-	        <li><a class="nav_link" href="#">Enchères</a></li>
+	        <!-- <li><a class="nav_link" href="#">Enchères</a></li> -->
 	        <li><a class="nav_link" href="${ pageContext.request.contextPath }/encheres/nouvelArticle">Vendre un article</a></li>
 	        <li><a class="nav_link" href="${ pageContext.request.contextPath }/encheres/SeDeconnecter">Déconnexion</a></li>      	
       	</ul>

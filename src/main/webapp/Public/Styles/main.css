@@ -63,6 +63,7 @@ strong {
 header {
   background: white;
   width: 100%;
+  border-bottom: 1px solid #272a36;
 }
 
 .nav {
@@ -685,6 +686,7 @@ footer div a {
 	.navbar ul li {
 		font-size: 2rem;
 		color: white;
+		margin: 2rem;
 	}
 	
 	.navbar ul li .nav_link {

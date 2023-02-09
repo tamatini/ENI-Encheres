@@ -3,7 +3,7 @@
 <%@ include file="./Partials/Header.jspf" %>
 
 <main class="darkblue_main">
-<div class="vente">
+<div class="vente container">
   <section>
     <div>
       <c:choose>
