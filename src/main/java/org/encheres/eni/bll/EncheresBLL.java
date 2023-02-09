@@ -361,6 +361,20 @@ public class EncheresBLL {
 			businessException.ajouterErreur(CodesResultatBLL.INSERT_BID_AMOUNT_END_DATE_ERROR);
 		}
 		
+		// Contrôle valeurs
+//		System.out.println("*******************************************");
+//		System.out.println();
+//		System.out.println("user id : " + userId);
+//		if (ancienneEnchere.getAcheteur() != null) {
+//			System.out.println("dernier encherisseur id : " + ancienneEnchere.getAcheteur().getUtilisateurId());
+//			System.out.println("montant dernière enchère : " + ancienneEnchere.getMontant_enchere());
+//			System.out.println("crédit encherisseur avant mise si même id : " + (nouvelEncherisseur.getCredit() + ancienneEnchere.getMontant_enchere()));
+//			System.out.println("crédit encherisseur après mise si même id : " + (nouvelEncherisseur.getCredit() + ancienneEnchere.getMontant_enchere() - nouvelleOffre));
+//		}
+//		System.out.println("montant enchere : " + nouvelleOffre);
+//		System.out.println("crédit encherisseur avant mise si id différent : " + nouvelEncherisseur.getCredit());
+//		System.out.println("crédit encherisseur après mise si id différent : " + (nouvelEncherisseur.getCredit() - nouvelleOffre));
+		
 		if(businessException.hasErreurs()) {
 			throw businessException;
 		} else {
@@ -380,7 +394,7 @@ public class EncheresBLL {
 			}
 			
 			// Nouvelle mise déduite du nouvel enchérisseur
-			if (ancienneEnchere.getAcheteur().getUtilisateurId() == userId) {
+			if (ancienneEnchere.getAcheteur() != null && ancienneEnchere.getAcheteur().getUtilisateurId() == userId) {
 				nouvelEncherisseur.setCredit(nouvelEncherisseur.getCredit() + ancienneEnchere.getMontant_enchere() - nouvelleOffre);
 			} else {
 				nouvelEncherisseur.setCredit(nouvelEncherisseur.getCredit() - nouvelleOffre);

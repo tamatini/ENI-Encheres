@@ -3,7 +3,6 @@ package org.encheres.eni.bll;
 import java.util.List;
 
 import org.encheres.eni.BusinessException;
-import org.encheres.eni.bo.Article;
 import org.encheres.eni.bo.Categorie;
 import org.encheres.eni.dal.DAO;
 import org.encheres.eni.dal.DAOFactory;

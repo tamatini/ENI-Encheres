@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.encheres.eni.BusinessException;
-import org.encheres.eni.bo.Article;
 import org.encheres.eni.bo.Categorie;
 import org.encheres.eni.dal.CodesResultatDAL;
 import org.encheres.eni.dal.DAO;

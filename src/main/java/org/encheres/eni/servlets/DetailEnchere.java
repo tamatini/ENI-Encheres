@@ -123,10 +123,13 @@ public class DetailEnchere extends HttpServlet {
 			response.sendRedirect(request.getContextPath()+"/encheres/detailEnchere?id=" + articleId);
 			
 		} catch (NumberFormatException nfe) {
+			nfe.printStackTrace();
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 		} catch (NullPointerException npe) {
+			npe.printStackTrace();
 			response.sendRedirect(request.getContextPath()+"/encheres");
 		} catch (BusinessException be) {
+			be.printStackTrace();
 			request.setAttribute("Liste_codes_erreurs", be.getListeCodesErreur());
 			request.setAttribute("id", Integer.parseInt(request.getParameter("id")));
 			doGet(request, response);
